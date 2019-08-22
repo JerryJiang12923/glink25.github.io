@@ -2,7 +2,7 @@
 layout:     post
 title:      iOS12.4越狱NFCWriterX完美使用攻略
 subtitle:   iOS12.4越狱NFCWriterX完美使用攻略
-date:       2019-08-022
+date:       2019-08-22
 author:     GLink25
 header-img: img/post-bg-default.jpg
 catalog: true
