@@ -4,6 +4,7 @@ description: "Thinking will not overcome fear but action will."
 ---
 
 {% for post in paginator.posts %}
+{% if post.tags !contains '故事' %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h2 class="post-title">
@@ -15,7 +16,7 @@ description: "Thinking will not overcome fear but action will."
         </h3>
         {% endif %}
         <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
+            {{ post.content | strip_html | truncate:100 }}
         </div>
     </a>
     <p class="post-meta">
@@ -23,6 +24,7 @@ description: "Thinking will not overcome fear but action will."
     </p>
 </div>
 <hr>
+{% endif %}
 {% endfor %}
 
 <!-- Pager -->
