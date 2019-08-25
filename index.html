@@ -4,7 +4,8 @@ description: "Half a loaf is better than none."
 ---
 
 {% for post in paginator.posts %}
-{% if post.tags !contains '故事' %}
+{% if post.tags contains '故事' %}
+{% else %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h2 class="post-title">
