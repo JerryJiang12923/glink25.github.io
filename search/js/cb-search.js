@@ -48,14 +48,16 @@ $(document).ready(function () {
     });
 
     $("#cb-close-btn").click(function () {
-        $(".cb-search-tool").css("display", "none");
+        //$(".cb-search-tool").css("display", "none");
+        $(".cb-search-tool").fadeOut("fast")
         show = false;
         time1 = 0;
     });
 
     $("#cb-search-btn").click(function () {
-        $(".cb-search-tool").css("display", "block");
+        //$(".cb-search-tool").css("display", "block");
         show = true;
+        $(".cb-search-tool").fadeIn("fast");
         $("#cb-search-content").val("");
         $("#cb-search-content").focus();
         time1 = 0;

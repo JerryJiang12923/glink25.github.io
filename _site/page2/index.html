@@ -33,6 +33,9 @@
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
+    <!-- search css -->
+    <link rel="stylesheet" href="/search/css/cb-search.css">
+
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- Hux change font-awesome CDN to qiniu -->
@@ -457,19 +460,19 @@
 </script>
     <div class="search">
         <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
-              opacity: 0.95; background-color: #111111; z-index: 9999; display: none;">
+              opacity: 1; ; z-index: 9999; display: none;">
             <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
 
-            <div style="position: fixed; top: 16px; right: 16px;">
+            <div class="cb-close-btn1">
                 <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
             </div>
         </div>
 
-        <div id="cb-search-btn" style="position: fixed; left: 16px; top: 13px; z-index: 9998">
+        <div id="cb-search-btn" style="position: absolute; left: 16px; top: 13px; z-index: 9998">
             <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
         </div>
 
-        <link rel="stylesheet" href="/search/css/cb-search.css">
+<!--         <link rel="stylesheet" href="/search/css/cb-search.css"> -->
     </div>
 <script src="/search/js/bootstrap3-typeahead.min.js"></script>
 <script src="/search/js/cb-search.js"></script>
