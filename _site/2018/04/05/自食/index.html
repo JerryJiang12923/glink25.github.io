@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我是怎么来到这的？">
+    <meta name="keywords"  content="DULC, DULC Blog, 稻壳俱乐部, wuliangdebeiji, 无良的北极, iOS, Apple, iPhone，软件，教程，小说，故事">
+    <meta name="theme-color" content="#000000">
+    
+    <title>自食 - 稻壳 | dulc blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2018/04/05/%E8%87%AA%E9%A3%9F/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="/">DULC</a> -->
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/story/">Story</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-desk.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-desk.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#故事" title="故事">故事</a>
+                        
+                        <a class="tag" href="/tags/#荒诞" title="荒诞">荒诞</a>
+                        
+                    </div>
+                    <h1>自食</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by GLink25 on April 5, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h1 id="自食">自食</h1>
+
+<p>我没有吃她。</p>
+
+<p>他面无表情地坐在审讯椅上，一份报纸被重重地拍在他的面前，铁桌下陈年的灰尘被震起弥漫开来，散发着腐朽和潮湿的气味。那份报纸用占了激活大半版面的标题写着“食人魔”三个大字，旁边的小字像蚂蚁一样事无巨细地把发生在那栋小区520室的惨案填满了报纸剩下的空间，生怕漏掉一丝细微的能再多吸引一点百无聊赖的居民的谈资。</p>
+
+<p>那个收电费的小伙子无论如何也没有想到，在那个他敲了四十二下都没有任何回应的门的背后，那个卧室的床上，躺着一个没有了四肢，只剩下一个残缺头颅和四分之三身体的、被绷带包裹得只剩下嘴唇的女人，在她的身边坐着一个男人，他的右手拿着一把擦得发亮的手术刀，另一只手抚摸着女人的胸膛，直到她再也没有了心跳，身体冰凉。男人站了起来，像是祷告般朝着女人鞠了一躬，然后拿出了手机，报了警。</p>
+
+<p>她是我见过最美丽，最勇敢的女人。</p>
+
+<p>他开口了。</p>
+
+<p>她是我的导师，人体解剖学教授，医科院副院长。</p>
+
+<p>我景仰她，就像每一个发自内心热爱医学的医学生那样景仰她。我只见过那些从实验室里抬出来的，泡着福尔马林的散发着恶臭的尸体，而她见过无数鲜活的，涌动着着血液的身躯，肌肉，骨骼。在手术台上，她拯救过无数人的生命，从死神手里一次又一次地取回那些挣扎的尖叫着的灵魂，她就像一个天使，一个守护众生的天使。她在讲堂上教授我们如何从血管盘枝错杂的胸腔里取出肝脏，又如何拼接那些错位的血管，把一个人的器官移植到另一个人身上。那种感觉就像是一个魔术师，一个人的全身在你眼前暴露无遗，他的心脏在你的眼前跳动，他的血液在你眼前流动，那些构成了一个人的全部，只有感受到这些，才能感受到真正的自己。</p>
+
+<p>但是她感受不到。</p>
+
+<p>她喜欢烹饪。她说她享受滚烫的油和食物接触的感觉。鲜红的猪肉在锅里和热油碰撞，发出滋滋的声响，变成美味的料理。这是猪的一生，它们尝过千奇百怪的饲料，却不知道自己才是最好的食物。一只猪永远没办法直到自己是什么，因为它不吃猪肉。她尝过，也亲手做过无数道料理，唯独不喜欢吃辣，因为她说辣是一种痛觉，而她感受不到疼痛。</p>
+
+<p>那是我第一次去她家里，她的家很简单，整洁到像从来没有人住在这里一样，但是厨房很大，冰箱里摆满了各种各样的食材。她没有结过婚，没有养过宠物，但见过她身材的人都不会相信她依旧单身，将近四十岁的她保养的像个十四岁的少女，我的手触碰到她的乳房，光滑的像玉石雕琢的艺术品。那是我的第一次，我喘着粗气，喷发的像被割开的颈动脉，翻江倒海，却像一只发狂的野兽撞进了大海，被她高超的技巧和柔软的腰彻底征服。我上了一个魔鬼，这是我看着她骑在我身上的时候最诡异而真实的念头。</p>
+
+<p>她起身点了一支烟，氤氲的橘黄色灯光打在她的脸上，她缓缓地吐出一个烟圈，看着它慢慢散去。高潮是我唯一能感觉到自己存在的方式，她说。她天生便没有痛觉，无法治愈。小的时候她曾经把脚伸进滚烫的热水里，看着它愈发红肿而不知，直到母亲过来尖叫着把她抱起。她从那时便知道自己与常人的异常，有人羡慕她不必忍受痛苦，却不知感受不到痛苦才是最大的痛苦。大多数时候我不确定自己是否还真正活着，她苦笑着对我说。她羡慕那些躺在病床上的病人们，那是她从未拥有过的感受。一段时间里她曾疯狂地自残，把针插进脚趾，用刀在手臂上划出一道道口子，敲碎自己的牙齿，但全都以失败告终。尽管她伤痕累累，几乎全身都在流血，但她依然什么都感觉不到。</p>
+
+<p>就像一具行走的尸体。</p>
+
+<p>她试图找到解脱的方法，因此她选择了学医，但至今没有人知道她的病因，包括她自己。尽管她的医学造诣非常之高，却依旧对自己无能为力。就像一个噩梦，梦里她没有知觉，却在疯狂地想要醒来。只有味觉能刺激她早已麻木的神经，品尝成为了她赖以生存的方式，所有的食物都是毒品，她疯狂地沉迷于舌头带来的生的渴望，她不是在充饥，她在品尝世界。</p>
+
+<p>听她说完的我躺在床上陷入了震惊，看着眼前这个饱受苦难女人不知道该说些什么，她却笑着对我说，从今以后在课堂上我教你医术，在我家，我要教你下厨。</p>
+
+<p>她的厨艺和她的医术一样精湛，她熟悉每一份食材的纹路和肌理，她将一只鸡分离得像一份艺术品，每一次下刀都精确到位，剔骨削肉不差毫厘，吃完后甚至能将骨架重新拼好，显露出食材原来的模样，令人叹为观止。她教的十分用心，我学的也很快，毕竟她说过我是她教过最聪明的学生。我很早就猜到了她的用意，她也看穿了我。她说这件事总需要一个人来替她动手，凭她自己无法完成。她尊重我的意愿，最后一次和她云雨之后，她穿好了衣服，眼神柔软而坚硬。她问我愿不愿意帮她，我看着她柔软的长发和身体，没有拒绝。</p>
+
+<p>她为我和自己请了长达一个月的假期。从学院带出一些手术器械并不算难事，于是我们就一起在她的卧室布置了一个精致而复杂的手术台，足够完成一个简单的阑尾手术。她准备好了足够的绷带和消毒药水，甚至她储存的自己的冷藏血液，以防止大出血。厨房也备好了将近一个月的蔬菜和调味品，但事实证明不需要那么多，因为她不想要不够新鲜的食物，而我也低估了她的胃口。</p>
+
+<p>一切准备妥当之后，我们开始了。她给了我一个拥抱，告诉我这不是死亡，而是重生。只有这样，她才能重新找回自己，这是她感受自己的唯一方式。</p>
+
+<p>于是从她的右腿开始，我沿着她的膝盖卸下了她的小腿，并替她包扎好。第一次的手术有点困难，但她没有麻醉，因此能一起指导我，这让我信心大增。腿部的肉切割起来较为简单，我把一部分腌制起来，另一部分直接切好入锅爆炒，香味很浓，她吃了整整两天才吃完，她也邀请过我一起品尝，但我谢绝了，因为我知道我没有资格。她的脚掌则被我煮熟卤制，淋上酱汁，她试过跟鸭掌一样的吃法，但是失败了，因为人的趾关节太过柔韧，不好咬开，于是我只好把整只脚掌切开，剔出卤肉做成凉菜，当成她休息时的零食。另一条腿也大致是同样的做法。腿骨被我洗净风干，一一替换在在准备好的人体骨架模型上。</p>
+
+<p>大腿的拆卸和预想的一样困难。而且极容易导致大出血，因此只能选择放弃，只是象征性地两边各割出一块做成了红烧肉，她说这是她吃过的肉质最细嫩的肉了，真正的滑而不腻。我知道她是在赞扬我的厨艺，因此我也不准备让她失望。接下来的手术是子宫摘除，她很自然地解开衣服，整个身体和往常一样在我面前一览无余，依旧光滑如常。消毒过程十分漫长，我打开了她的腹腔，那个我曾经进入过无数次，让我神魂颠倒的地方静静地躺在那里。这是人诞生的地方，是摇篮。手术不算复杂，我把子宫取出来，细细地切成碎肉入锅爆炒，人的内脏铁锈味十分浓重，需要用大量的白酒中和，她吃的不是很尽兴，这让我有点气馁，她鼓励我说这并不是我的错，世界上还从未有过厨师能一次就做好从未做过的食材。在等待腹腔伤口愈合的过程中，我又卸下了她的左手臂，这比卸腿容易多了，整只手臂被我拆下。她建议我把手臂烧烤，手掌做卤。于是我便照做了，在阳台上架起烧烤架，转着手臂淋上腹部脂肪煎出的油脂，配上孜然滋滋作响，香气扑鼻。她吃的津津有味，全然不顾嘴上溅到的油渍。吃完后她大声痛哭起来，我坐在她的旁边抱住了她，替她擦去眼角的泪水，听到她说了一声小小的，谢谢。</p>
+
+<p>她坚持要吃肾和肝脏，我只能打开她的胸腔，取出了左肾，并切下了一部分肝脏，她还要求我取出四根肋骨做成排骨汤和红烧排骨，我只娶了两根，不是因为手术难度超乎想象，而是因为这是能保证她正常呼吸的最高选择。我实在不愿意粗暴地去剁碎她的肋骨，那样太过粗暴，但是她坚持砍碎，只有那样才能让骨髓里的营养融入汤中。我把每一块吃完的骨头都收集起来，用胶水粘合起来，替换到骨架模型上。</p>
+
+<p>有几天她吃腻了自己的肉，也点过几次外卖，但是吃了两口便吐了出来，她已经不再习惯除她身体之外的肉类了。</p>
+
+<p>终于她的最后一只手臂也被吃完了，那个时候她全身上下都打满了绷带，自身也已经虚弱不堪，没办法吃下那么多的食物，必须打点滴来补充营养。我问她是否就这样结束，她费力的摇了摇头，示意我按照之前约定的内容继续手术。但是她的身上已经找不到一丝能完整食用的地方了，我只好取出了她的右眼，割下了她的左耳，又从她的脸上精心挑选出一块肉切割下来，做成了一道菜。她吃力地吃了下去，吃到眼球的那一刻她有些迟疑，但还是嚼了嚼，吃完后，露出了满意的微笑。</p>
+
+<p>她已经把自己吃得差不多了，在我表示再也找不到任何地方供她食用之后，她微弱地想要说什么，我凑近她的嘴角，听到她轻声说着，心脏。</p>
+
+<p>我有点不知所措，这是我们事先没有约定过的，无论取出心脏的哪一部分，对她的伤害都是致命性的，她也清楚地知道这一点，但是我必须按照她的要求完成她的心愿。我第一次感受到了她的渴望，明白了她这么多年来的无助和痛苦，她无比地想要感知到自己的存在，却只能以这种最低端最原始的方式。我含着泪水打开了她的胸腔，在她的跳动的心脏上割下一块。我只是简单地把它煮熟，煮到稀软，没有加任何调料，放在洁白的瓷盘上端到了她的嘴角。这是她最富有生命力的地方，没有任何配料配得上她。她已经没有力气睁开眼睛了，但还是把那小块心脏咽了下去，这次我终于坚持不住了，在她的身旁大声痛哭。</p>
+
+<p>她没有再说过话，眼睛也再也没有睁开过，我伏在她的胸膛上感受她逐渐微弱的心跳，静静地等待着那一刻的到来，直到她死去。</p>
+
+<p>我说完了。男人舔了舔发干的嘴唇，看着从洗手间里呕吐完回来的做笔录的女警察，礼貌地微笑着。</p>
+
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/03/24/%E6%8B%9B%E6%89%8B/" data-toggle="tooltip" data-placement="top" title="招手">
+                        Previous<br>
+                        <span>招手</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/04/14/%E7%8E%8B%E5%AD%90%E4%B8%8E%E6%81%B6%E9%BE%99/" data-toggle="tooltip" data-placement="top" title="王子与恶龙">
+                        Next<br>
+                        <span>王子与恶龙</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+                
+                <!-- 引入Gitalk评论插件  -->
+                <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+                <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+                <div id="gitalk-container"></div>
+                <!-- 引入一个生产md5的js，用于对id值进行处理，防止其过长 -->
+                <!-- Thank DF:https://github.com/NSDingFan/NSDingFan.github.io/issues/3#issuecomment-407496538 -->
+                <script src="/js/md5.min.js"></script>
+                <script type="text/javascript">
+                    var gitalk = new Gitalk({
+                    clientID: '1f910627d2b45d0c4b25',
+                    clientSecret: '323d8061249229d3d6b71531c6883e2c2e5ad840',
+                    repo: 'glink25.github.io',
+                    owner: 'glink25',
+                    admin: ['glink25'],
+                    distractionFreeMode: true,
+                    id: md5(location.pathname),
+                    });
+                    gitalk.render('gitalk-container');
+                </script>
+                
+                <!-- Gitalk end -->
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#故事" title="故事" rel="11">
+                                    故事
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#荒诞" title="荒诞" rel="11">
+                                    荒诞
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="2">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="https://apple.com">Apple</a></li>
+                    
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/glink25">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; DULC 2019
+                    <br>
+                    Theme on <a href="https://github.com/glink25/glink25.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=glink25&repo=glink25.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'd53cc36a8df906c2d6df29c2fd6d7944';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+</script>
+    <div class="search">
+        <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
+              opacity: 0.95; background-color: #111111; z-index: 9999; display: none;">
+            <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
+
+            <div style="position: fixed; top: 16px; right: 16px;">
+                <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
+            </div>
+        </div>
+
+        <div id="cb-search-btn" style="position: fixed; left: 16px; top: 13px; z-index: 9998">
+            <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
+        </div>
+
+        <link rel="stylesheet" href="/search/css/cb-search.css">
+    </div>
+<script src="/search/js/bootstrap3-typeahead.min.js"></script>
+<script src="/search/js/cb-search.js"></script>
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

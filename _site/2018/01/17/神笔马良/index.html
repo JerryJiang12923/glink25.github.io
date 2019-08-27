@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我是怎么来到这的？">
+    <meta name="keywords"  content="DULC, DULC Blog, 稻壳俱乐部, wuliangdebeiji, 无良的北极, iOS, Apple, iPhone，软件，教程，小说，故事">
+    <meta name="theme-color" content="#000000">
+    
+    <title>神笔马良 - 稻壳 | dulc blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2018/01/17/%E7%A5%9E%E7%AC%94%E9%A9%AC%E8%89%AF/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="/">DULC</a> -->
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/story/">Story</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-desk.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-desk.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#故事" title="故事">故事</a>
+                        
+                        <a class="tag" href="/tags/#荒诞" title="荒诞">荒诞</a>
+                        
+                    </div>
+                    <h1>神笔马良</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by GLink25 on January 17, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h1 id="神笔马良">神笔马良</h1>
+
+<p>马良得到了一只神笔。</p>
+
+<p>那个给他的老人是这么说的，这是一只神笔，可以给他任何他想得到的东西，只要一个人肚子足够大。</p>
+
+<p>肚子要足够大，足够装得下他想要的那个东西。至于怎么拿出来，老人捋了捋胡子，吐出来和拉出来都随意。</p>
+
+<p>马良吞了吞口水，看来他想给自己画个女朋友的想法是实现不了了。</p>
+
+<p>曾经被鱼刺卡在喉咙里好几天的马良仔细想了想，那种反胃到作呕的感觉他是不想再感受第二遍了。他摸了摸自己的肚子，是时候去郎中那里拿几副巴豆了。</p>
+
+<p>到底要画些什么东西呢？马良琢磨了好久，金子太重，拉不出来是会死人的；烧鸡馍馍这些吃的，似乎有点奇怪。那到底能拉些什么东西出来呢？马良为此愁了好几天。他决定从简单的东西开始，为了以防万一，先做几个实验看看。</p>
+
+<p>他仔细斟酌着，提起笔，在纸上画了一坨大便。马良的画技并不好，他也恐慌了很久到底他肚子里会变出什么东西来，毕竟不告诉别人的话也没人能认出来那纸上画的到底是个什么东西。他心里七上八下没有底，直到一会儿过后，他夹紧了屁股，一股便意直冲向他的脑门。好一会儿之后，马良心满意足地从茅厕里出来了，没错，是货真价实的玩意。他想，这下可以放心了。</p>
+
+<p>但是神笔这东西，看起来好是好，但似乎也没什么太大用处。只能画些小玩意，但是蹲茅厕的时候太受罪了，有时候稍大一点，那能蹲上几个钟头。好处也不是没有，至少不用担心吃不饱了，但是马良也只敢画些米饭馒头之类的，怕其他东西消化不良。</p>
+
+<p>马良也因此有了些名声，他的几个朋友亲眼看见他不吃不喝四五天，像个没事人一样，就靠在纸上画些食物就能活蹦乱跳，人称“画饼充饥”，这事很快就传遍了十里八乡，看到过的人没有不赞叹的。一些阔绰的乡绅和地主也觉得这事十分惊奇，也时不时给他一些赏钱。</p>
+
+<p>很快马良就意识到，神笔画出来的东西，不单单只能被自己拉出来，还能从别人拉出来。他能把别人想要的东西，画出在他们的胃里。</p>
+
+<p>他第一次发现这件事的时候是在晚上，那天他从集市上回家的时候遇上了一个乞丐，满脸胡须，瘦骨嶙峋，看起来几年都没有洗过澡，他听说过马良的事迹，向马良祈求永远不饿的秘密。</p>
+
+<p>马良问你真的想吃东西？乞丐不住地点头，马良说那你不准嫌弃。然后他提笔在墙壁上画了几个肉包子，过了一会，他并没有感到什么东西要喷涌而出的感觉，而乞丐则兴奋得大喊大叫，他说他的肚子饱了，打了个嗝，喉咙里涌上来的是大蒜和猪肉的味道。他激动地向马良磕头，问他是否自己从此不用再担心温饱。</p>
+
+<p>马良没有吭声，他的大脑在飞速地思考，这么久来他只给自己画过东西，没有想过神笔的其他用处。他突然有点颤抖地问乞丐，你想要金子吗？乞丐流下了感激的泪水，他说从来没有想到会有一个人对自己这么好。他点点头，马良深吸了一口气，在墙上画了一大坨金子，然后转身离开了。</p>
+
+<p>马良那天晚上睡得并不好，确切地说，他完全没有睡着，他向佛祖祈求自己的设想是错误的，他没有想过要伤害任何人。他在床上辗转反侧，焦灼难耐，终于他在鸡叫之前起了床，在黎明前回到了那个乞丐待的地方。</p>
+
+<p>乞丐早已不在那里，马良在旁边的一间茅厕里找到了他，他的尸体倒在茅坑上，两只眼瞪得比包子还大。他的面色发青，看起来在死前他曾痛苦地挣扎过，然而一切都无济于事，他还是死了，肚子像个小山一样鼓起，马良吓得跌坐在地上，捂着脸痛哭起来。</p>
+
+<p>马良以为自己可以很快忘掉这件事，毕竟一个无名乞丐的死没有人会关心。他埋了乞丐，试图让自己重新回到正常生活中。但是人们已经不再喜欢看他无聊的表演，看一个人几天不吃不喝并不是什么可以消解烦恼的事情。他们喜欢去集市上看新来的皮影和杂耍，马良变成了一个没有人关心的骗子，毕竟没有人真的相信人能不吃不喝。</p>
+
+<p>马良继续过回了穷日子，没有了赏钱，神笔只是一个吃不完的饭桶。他想要得到更多。他在一天夜里，把乞丐的尸体挖了出来。</p>
+
+<p>尸体早已经腐烂发臭，肚子依旧鼓起老高。马良忍着恶臭，剖开了乞丐的肚子。刀子碰到了一个硬硬的肿块，马良把它拿出来，很沉，很重。他把坟墓重新填上，把肿块洗干净，露出来的是沉甸甸金灿灿的黄金。</p>
+
+<p>马良的生活后来越过越好，人们不知道他是怎么发的家。他不再继续呆在某个地方，而是开始云游四海。他变得越来越有钱，躺在跟自己以前那个小破草屋一大的床上，他睡得很舒服。尽管有时候那些尸体会突然闯进他的梦中，跟他哭诉他们的肚子是多么的难受。让他最印象深刻的是一个小男孩，他怎么会选择一个那么小的孩子呢？他拿出一块金元宝，温柔地问他想不想要，那个流浪儿眼中满是期待，他说有了这笔钱，他就可以去找他的亲生父母。他从虐待他的养父母手中逃出来，没有想过会如此轻易闯进地狱。</p>
+
+<p>他有时候也不仅仅是给别人画金子，他也偶尔会对一个人真正的欲望感兴趣。他从别人的肚子里掏出来过许许多多奇奇怪怪的东西，有的是一些他们从未吃过的食物，有的是房子的脊梁，可怜的人，他在房子在他肚子里建好之前就咽气了。还有的是女人的乳房，男人的阳具。马良印象最深刻的是一个妓女。他带她在家里云雨，一边狠狠地插入，一边问她最想要什么。那个女人不住地呻吟着，在达到生命大和谐的时候喊了出来。马良没有听清楚，他释放完之后满脑子迷迷糊糊，随手在床边拿起神笔画了个不知道是什么的东西。那个妓女离开后没几天就传来了死讯，他听到有个妓女死前怀了一个孩子，不过是从胃里挖出来的。</p>
+
+<p>马良会画画，但没有什么是比画钱更得心应手的了。有时候他想自己是牛头马面，把那些人用他们的欲望带进地府；有时候他又觉得自己是天神，他满足了那些可怜又可悲的穷人，又带他们离开这个满目苍夷的世界。</p>
+
+<p>马良也许只想这样平平淡淡地活下去，娶妻生子，成家立业。他每次都告诉自己这是最后一次，他已经厌倦了从别人的尸体里，从一滩肮脏的污秽中取出黄金的感觉。但是他还是停不下来，或许他已经迷失在欲望中，又或许他只是习惯了杀人。</p>
+
+<p>那天晚上他提着酒瓶，满脸酒气跌跌撞撞地从青楼往家里赶。他倒是不担心家里的那个女人，毕竟他从未爱过她。他只是想回家。他哼着歌，一步两步，然后被石头绊倒了，一个乞讨的男孩把他扶了起来。马良巍巍战战地站了起来，问这个男孩想要什么。男孩摇了摇自己脏兮兮的头，说自己什么也不想要。</p>
+
+<p>马良突然大笑起来，笑得男孩害怕地往后挪。马良拽着男孩的衣襟，说，这世界上从来没有人会不想要什么。男孩拼命地摇头，马良却不依不饶，那些说自己什么都不想要的，不过都是骗子而已。他们是最拙劣的骗子，连自己都骗不了。你想要什么，我就能给你什么。你想要钱是吧，马良快要笑疯了，他提笔在地上画了一堆金子。你不是想要女人吗，他又在地上画了一个女人。还有房子，还有你想都没想过的见都没见过的山珍海味，我全都能给你。马良笑得自己连眼泪都出来了，他喝醉了，他在地上胡乱画了一堆，对着男孩说，你看，你想要的，我全都能给你。他又给自己灌了一大口酒。</p>
+
+<p>男孩满脸惊恐地看着这个人胡乱发着酒疯，他害怕得想要离开，然后，他看见，眼前的这个人突然炸裂开来，数不尽的东西从他身体里飞出来，血肉夹杂着钱币飞溅而出。男孩颤抖地跪在了地上，那个人的身体像泉眼一样不停地流出各种各样的东西，血腥的空气里夹杂着包子腐烂的恶臭，他甚至还看见了一只女人的手飞出来。他的脸上，身上到处都是污秽，恐惧使他忘记了逃跑。终于那个身体停止了喷射，血浆夹着木屑在地上四处流淌，男孩在夜色里瑟瑟发抖，他抬起头，看见一个老人从那摊血肉中捡起了一支笔，擦了擦笔身上的血，慈祥地向他走来。</p>
+
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/01/17/%E4%BB%96%E5%A5%BD%E5%83%8F%E4%B8%80%E6%9D%A1%E7%8B%97/" data-toggle="tooltip" data-placement="top" title="他好像一条狗">
+                        Previous<br>
+                        <span>他好像一条狗</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/03/23/%E7%9C%8B%E7%97%85/" data-toggle="tooltip" data-placement="top" title="看病">
+                        Next<br>
+                        <span>看病</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+                
+                <!-- 引入Gitalk评论插件  -->
+                <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+                <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+                <div id="gitalk-container"></div>
+                <!-- 引入一个生产md5的js，用于对id值进行处理，防止其过长 -->
+                <!-- Thank DF:https://github.com/NSDingFan/NSDingFan.github.io/issues/3#issuecomment-407496538 -->
+                <script src="/js/md5.min.js"></script>
+                <script type="text/javascript">
+                    var gitalk = new Gitalk({
+                    clientID: '1f910627d2b45d0c4b25',
+                    clientSecret: '323d8061249229d3d6b71531c6883e2c2e5ad840',
+                    repo: 'glink25.github.io',
+                    owner: 'glink25',
+                    admin: ['glink25'],
+                    distractionFreeMode: true,
+                    id: md5(location.pathname),
+                    });
+                    gitalk.render('gitalk-container');
+                </script>
+                
+                <!-- Gitalk end -->
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#故事" title="故事" rel="11">
+                                    故事
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#荒诞" title="荒诞" rel="11">
+                                    荒诞
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="2">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="https://apple.com">Apple</a></li>
+                    
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/glink25">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; DULC 2019
+                    <br>
+                    Theme on <a href="https://github.com/glink25/glink25.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=glink25&repo=glink25.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'd53cc36a8df906c2d6df29c2fd6d7944';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+</script>
+    <div class="search">
+        <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
+              opacity: 0.95; background-color: #111111; z-index: 9999; display: none;">
+            <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
+
+            <div style="position: fixed; top: 16px; right: 16px;">
+                <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
+            </div>
+        </div>
+
+        <div id="cb-search-btn" style="position: fixed; left: 16px; top: 13px; z-index: 9998">
+            <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
+        </div>
+
+        <link rel="stylesheet" href="/search/css/cb-search.css">
+    </div>
+<script src="/search/js/bootstrap3-typeahead.min.js"></script>
+<script src="/search/js/cb-search.js"></script>
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

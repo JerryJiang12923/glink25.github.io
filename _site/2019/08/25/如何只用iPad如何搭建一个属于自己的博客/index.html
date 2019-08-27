@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我是怎么来到这的？">
+    <meta name="keywords"  content="DULC, DULC Blog, 稻壳俱乐部, wuliangdebeiji, 无良的北极, iOS, Apple, iPhone，软件，教程，小说，故事">
+    <meta name="theme-color" content="#000000">
+    
+    <title>如何只用iPad如何搭建一个属于自己的博客？ - 稻壳 | dulc blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2019/08/25/%E5%A6%82%E4%BD%95%E5%8F%AA%E7%94%A8iPad%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="/">DULC</a> -->
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/story/">Story</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-desk.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-desk.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#iPad" title="iPad">iPad</a>
+                        
+                        <a class="tag" href="/tags/#软件推荐" title="软件推荐">软件推荐</a>
+                        
+                        <a class="tag" href="/tags/#生产力" title="生产力">生产力</a>
+                        
+                    </div>
+                    <h1>如何只用iPad如何搭建一个属于自己的博客？</h1>
+                    
+                    
+                    <h2 class="subheading">不止用来盖泡面</h2>
+                    
+                    <span class="meta">Posted by GLink25 on August 25, 2019</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h1 id="如何只用ipad如何搭建一个属于自己的博客">如何只用iPad如何搭建一个属于自己的博客？</h1>
+<h2 id="为什么是博客">为什么是博客？</h2>
+<p>很早之前我就有过搭建一个属于自己的博客的想法，尤其是在平行世界转成私密社区后，以前发表的卡片如果不成为会员将会在一年后被删除。我试着把里面的卡片转到其他平台，但试过了简书，lofter等等之后，我发现这些博客的排版和体验都不及平行世界，更重要的是，我更希望能更加细致地制定文章的排版和界面，但这些都是这些平台无法做到的。</p>
+
+<p>而如果这个博客是自己搭建的，那就不一样了，通过对网站css文件的修改，我们可以实现博客上每一个角落的个性化设置，里面的每一个地方掌控权都属于自己，简直不能更棒。</p>
+
+<p>在萌生搭建博客的想法的时候，我就一直在想，如果我能直接在iPad上就做完这一切该多好，搭建，码字，发布，修改一气呵成，完全不需要电脑，这才是iPad的理想目标。而事实证明，这一切都是可行的，甚至比你想象的还要简单。</p>
+
+<h2 id="工具和材料">工具和材料</h2>
+<h3 id="-github-pages">· Github Pages</h3>
+<p>说到自己搭建博客，最耳熟能详的莫过于wordpress了，但是这需要我们有自己的域名和服务器，虽然操作过程简单但维持服务器的费用也不低，如果我们只是用来做博客的话未免有些大材小用。</p>
+
+<p>而恰好，Github给了我们一个免费的方式，那就是Github Pages。具体的介绍我就不说了，总之这是一个十分轻量的静态博客平台，支持jekyll和Hexo，而所做的就是负责把Markdown文件转化为博客网页，十分方便，并且这一切都只需要一个GitHub账号就行了。</p>
+<h3 id="-ipad">· iPad</h3>
+<p>如果这篇文章只是教人如何使用Github Pages搭建博客的话，那就没有存在的必要了，网上一搜就能搜索到无数篇这样的文章，我真正想写的，是我如何用了两天时间，只使用iPad完成了这一“壮举”。毕竟自从iPad OS发布之后，我就一直在寻找一个能够让iPad变得真正有用的方式，而不再只是一个大号的手机。</p>
+<h2 id="开始搭建">开始搭建</h2>
+<p>在搭建之前，请根据<a href="https://www.jianshu.com/p/e68fba58f75c">这篇文章</a>完成申请Github Pages的必要步骤，很简单，从注册Github账号开始一直到fork仓库都可以直接在网页上完成，如果想简单一点可以直接fork<a href="https://github.com/glink25/glink25.github.io">我的仓库</a>，感谢<a href="https://github.com/qiubaiying">@qiubaiying</a>提供的模版。事实上，如果你愿意，所有步骤你都可以只使用浏览器完成，如果你愿意忍受每一步都要等待网页加载完成的话。</p>
+
+<p>当你完成了上述步骤并可以通过github.io网址进入你的博客的时候，iPad就可以真正发挥作用了。</p>
+<h3 id="-ipad上的git环境working-copy">· iPad上的Git环境—Working Copy</h3>
+<p>我们已经有了建立博客的源代码了，那么要怎样才能修改其中的内容呢？在网页上修改代码实在是太麻烦了，iPad上有没有一个像样的git环境呢？当然有，<a href="https://apps.apple.com/cn/app/working-copy/id896694807">Working Copy</a>这个软件包括了一系列的git操作，包括基本的clone，commit，push，merge，上传自己的repo，甚至查看文件的历史版本，并且完美支持iOS Files，说是iPad上最强的代码工具也不为过。</p>
+
+<p><img src="https://i.loli.net/2019/08/25/pQqOGyAUiFvmtbM.jpg" alt="working copy界面" /></p>
+
+<p>有了Working Copy，我们就能够轻松clone我们github上的仓库到iPad上进行工作了。我们首先要做的就是去个性化，我们需要把fork过来的仓库中属于作者私人的部分改成自己的，但注意尊重作者的劳动成果，不要恶意署名。需要修改的大致有以下几个部分：</p>
+
+<ol>
+  <li>index.html文件，用于博客首页的显示页面，可以修改成自己想要博客的名称和描述。</li>
+  <li>about.html文件，用于个人介绍页面，修改成自己的自我介绍。</li>
+  <li>_post文件夹，用于存放自己书写的博客Markdown文件，可以看情况删除原作者的博客。注意，上传的.md文件文件名必须以“年份-月份-日期-标题”的形式存放，否则无法显示。</li>
+  <li>img文件夹，存放博客网站的favicon图标、apple-touch-img图片以及各种图片，这些图标文件可以修改成自己想要的文件，但注意文件名必须与原文件一致，了解jekyll的结构后，你可以在相应的引用文件中修改成你想要的文件名。</li>
+  <li>pwa文件夹，关于pwa应用你可以看这里了解。用于存放pwa应用的设置，你可以替换成自己想要的图标，也可以在manifest文件中修改应用名称和描述。</li>
+</ol>
+
+<p>在本地修改完成后，你可以点击commit提交自己的修改，如果没有错误这些将在几分钟内应用到你的博客上，刷新页面就可以看到更改后的效果。建议所有的修改都在Working Copy中完成，不要使用GitHub网页版，不然再次在本地修改前忘记fetch会很难受。</p>
+<h3 id="ipad上的markdown写作应用">·iPad上的Markdown写作应用</h3>
+<p>忘掉印象笔记，忘掉Bear，iPad最好的Markdown写作工具就是<a href="https://apps.apple.com/cn/app/markdown/id1472328263">Markdown</a>，简洁的界面，完善的Markdown语法，强大的编辑器，这篇文章就是用它完成的。更贴心的是，它会自动将你插入的图片上传到云床，简直是iPad写作的最佳选择。</p>
+
+<p><img src="https://i.loli.net/2019/08/25/GTnVrRMj6DH8ZYg.jpg" alt="Markdown界面" /></p>
+
+<h3 id="-在ipad上制作图标和图片">· 在iPad上制作图标和图片</h3>
+<p>绘画是iPad的强项，但图标制作不是，手指触控让精确制作图标在iPad上极为困难。如果你只是需要一个简单快速的方法来制作一个图标用作网站的favicon，那么推荐<a href="https://apps.apple.com/cn/app/assembly-art-and-design/id1024210402">Assembly</a>。
+iPad上有很多图标生成软件，但如果你追（cai）求（da）完（qi）美（cu），可以考虑<a href="https://apps.apple.com/cn/app/affinity-photo/id1117941080">Affinity Photo</a>，这是一个十分强大的制图软件，在移动端的功能甚至可以媲美Photoshop。如果你熟悉一些图标的制作，例如蒙版和布尔运算，并且愿意在移动端制图的话，可以考虑购买。</p>
+
+<p><img src="https://i.loli.net/2019/08/25/p5lNTQZ4yMwxGm3.jpg" alt="Affinity Photo" /></p>
+
+<p>至于绘图，首推的当然是<a href="https://apps.apple.com/cn/app/procreate/id425073498">Procreate</a>，十分强大的绘图工具。而修图的工具iPad上更是数不胜数，自带的照片也足够好用，就不介绍了，哪个习惯用哪个。</p>
+<h3 id="-用ipad编程">· 用iPad编程</h3>
+<p>如果你是一个不怕麻烦而且极致追求便携性并且不惜为此牺牲性能和效率的程序员的话，你的确可以用软件远程ssh到你的电脑上编程，但是本地运行代码的话还是别想了，虽然确实有部分应用可以满足一部分需求，例如<a href="https://apps.apple.com/cn/app/c-c-%24/id1003101482">C/C++</a>、<a href="https://apps.apple.com/cn/app/pythonista-3/id1085978097">Pythonista 3</a>等等，但是我指的编程是利用iOS捷径和jsbox在iPad上完成一系列自动化工作。
+在转移平行世界卡片的时候，我意识到如果能通过网页识别标签截取我的卡片内容并自动保存为Markdown文件的话，我就不用一篇篇地复制黏贴了，于是我制作了这样一个捷径“平行世界2md”（iPad OS测试版捷径无法分享），它可以识别出平行世界卡片分享链接里的标题、内容和发布日期，并自动添加jekyll所需的yml头文件，最后存储到文件中。这其实是整篇文章中最复杂最耗时的过程，其中使用了正则表达式和循环等来确保内容和格式的正确。</p>
+
+<p><img src="https://i.loli.net/2019/08/25/CXUgY7zw5keLQA9.jpg" alt="捷径" /></p>
+
+<p>由于未知原因我无法直接将文本保存为md格式，所以又使用jsbox写了一个批量将.txt文件转为.md文件等脚本。编写捷径的过程经历了大量的调试和报错，踩过了捷径中正则表达式和网页格式的大坑，所需时间远超复制黏贴，但最后的结果十分令人欣慰。</p>
+<h2 id="总结">总结</h2>
+<p>经过了大约两天的过程，只使用iPad的我搭建好了一个完全可用静态博客-<a href="https://glink25.github.io/">稻壳｜DULC</a>，额外的工具包括Apple pencil（绘制首页图片）和Smart Keyboard。</p>
+
+<p>不得不说，在这个过程中，iPad OS的确给了我一种iPad也能成为生产力工具的感觉，我可以一边用Safari浏览网页源代码一边编写捷径脚本，还能再开一个悬浮界面搜索网页，文件中我可以批量移动和删除文件，轻松切换app文件夹，就像一个真正的电脑那样。</p>
+
+<p>但是，另一方面，iPad的效率还是太慢了。iPad上每一个操作都需要不停地用手指点击、滑动，尤其是在选定文字和编辑捷径的时候，蹩脚的定位和来回的切换让人实在心累。在iPad上，很多时间都被一些细枝末节上的重复操作浪费了，例如文件应用里面不能直接返回跳转过来的文件夹、打开widget页面要先下拉通知栏再左滑等等，正是这些细节上的繁琐让iPad注定只能承载极为轻量的工作。iPad OS上的小bug，鸡肋的手势，缺乏应用支持等等让iPad在成为真正的生产力工具的路上跌跌撞撞。</p>
+
+<p>不过至少，我们看到了苹果的诚意，能够想象到在iPad OS正式版推送后，会有越来越多应用适配iPad OS，给iPad提供更多的可能，只用iPad就能完成的工作，以后也会变得越来越多。但要是问我想不想再用iPad干点什么</p>
+
+<p>bilibili，启动！</p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/08/22/iOS-nfcwriter/" data-toggle="tooltip" data-placement="top" title="iOS12.4越狱NFCWriterX完美使用攻略">
+                        Previous<br>
+                        <span>iOS12.4越狱NFCWriterX完美使用攻略</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+                
+                <!-- 引入Gitalk评论插件  -->
+                <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+                <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+                <div id="gitalk-container"></div>
+                <!-- 引入一个生产md5的js，用于对id值进行处理，防止其过长 -->
+                <!-- Thank DF:https://github.com/NSDingFan/NSDingFan.github.io/issues/3#issuecomment-407496538 -->
+                <script src="/js/md5.min.js"></script>
+                <script type="text/javascript">
+                    var gitalk = new Gitalk({
+                    clientID: '1f910627d2b45d0c4b25',
+                    clientSecret: '323d8061249229d3d6b71531c6883e2c2e5ad840',
+                    repo: 'glink25.github.io',
+                    owner: 'glink25',
+                    admin: ['glink25'],
+                    distractionFreeMode: true,
+                    id: md5(location.pathname),
+                    });
+                    gitalk.render('gitalk-container');
+                </script>
+                
+                <!-- Gitalk end -->
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#故事" title="故事" rel="11">
+                                    故事
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#荒诞" title="荒诞" rel="11">
+                                    荒诞
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="2">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="https://apple.com">Apple</a></li>
+                    
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/glink25">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; DULC 2019
+                    <br>
+                    Theme on <a href="https://github.com/glink25/glink25.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=glink25&repo=glink25.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'd53cc36a8df906c2d6df29c2fd6d7944';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+</script>
+    <div class="search">
+        <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
+              opacity: 0.95; background-color: #111111; z-index: 9999; display: none;">
+            <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
+
+            <div style="position: fixed; top: 16px; right: 16px;">
+                <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
+            </div>
+        </div>
+
+        <div id="cb-search-btn" style="position: fixed; left: 16px; top: 13px; z-index: 9998">
+            <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
+        </div>
+
+        <link rel="stylesheet" href="/search/css/cb-search.css">
+    </div>
+<script src="/search/js/bootstrap3-typeahead.min.js"></script>
+<script src="/search/js/cb-search.js"></script>
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
