@@ -434,24 +434,32 @@
 
 <!-- Side Catalog -->
 
-
-</script>
-    <div class="search">
-        <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
-              opacity: 1; ; z-index: 9999; display: none;">
-            <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
-
+<div class="searchBar">
+        <div class="search_input">
+            <div class="search_btn1"><img width="28px" height="28px" class="s-img" src="search/img/cb-search.png">
+            </div>
             <div class="cb-close-btn1">
                 <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
             </div>
         </div>
-
-        <div id="cb-search-btn" style="position: absolute; left: 16px; top: 13px; z-index: 9998">
-            <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
+<!--         <script type="text/javascript">
+            $('.search_btn1').click(function(e){
+                var _this = $('.search_input');
+                var id=10;
+                _this.append('<div class="search_btn" id="wb_'+id+'"></div>');
+                $('.s-img').attr("src",'search/img/cb-search-black.png')
+            })
+        </script>
+ -->        
+        <div class="cb-search-tool" style=" z-index: 9999; display: none;">
+            <input type="text" class="form-control cb-search-content" id="cb-search-content" style="border: none;box-shadow: none;" placeholder="文章标题 日期 标签" >
         </div>
 
+    <!--     <div id="cb-search-btn">
+            <img src="/search/img/cb-search.png" width="25px" height="25px"  title="双击ctrl试一下"/>
+        </div> -->
+
 <!--         <link rel="stylesheet" href="/search/css/cb-search.css"> -->
-    </div>
 <script src="/search/js/bootstrap3-typeahead.min.js"></script>
 <script src="/search/js/cb-search.js"></script>
 

@@ -4,6 +4,12 @@ $(document).ready(function () {
     var names = new Array(); //文章名字等
     var urls = new Array(); //文章地址
     $(document).keyup(function (e) {
+        //修改dropmenu
+        $(".typeahead dropdown-menu").css(
+            "top","0px"
+        )
+        $("ul").removeAttr("style");
+
         var time2 = new Date().getTime();
         if (e.keyCode == 17) {
             var gap = time2 - time1;
@@ -50,16 +56,28 @@ $(document).ready(function () {
     $("#cb-close-btn").click(function () {
         //$(".cb-search-tool").css("display", "none");
         $(".cb-search-tool").fadeOut("fast")
+        $(".search_btn").fadeOut("fast")
+        $(".cb-close-btn1").fadeOut("fast")
+        $('.s-img').attr("src",'search/img/cb-search.png');
         show = false;
         time1 = 0;
     });
 
-    $("#cb-search-btn").click(function () {
-        //$(".cb-search-tool").css("display", "block");
+    $(".search_btn1").click(function () {
+        
         show = true;
-        $(".cb-search-tool").fadeIn("fast");
-        $("#cb-search-content").val("");
-        $("#cb-search-content").focus();
+        var _this = $('.search_input');
+                var id=10;
+                _this.append('<div class="search_btn" id="wb_'+id+'"></div>');
+                $('.s-img').attr("src",'search/img/cb-search-black.png');
+        function a(){
+            $(".cb-search-tool").fadeIn("fast");
+            $(".cb-close-btn1").fadeIn("fast");
+
+            $("#cb-search-content").val("");
+            $("#cb-search-content").focus();
+            }
+        setTimeout(a, 200);
         time1 = 0;
     });
 
