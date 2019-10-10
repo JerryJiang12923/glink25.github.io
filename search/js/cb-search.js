@@ -58,7 +58,7 @@ $(document).ready(function () {
         $(".cb-search-tool").fadeOut("fast")
         $(".search_btn").fadeOut("fast")
         $(".cb-close-btn1").fadeOut("fast")
-        $('.s-img').attr("src",'search/img/cb-search.png');
+        $('.s-img').attr("src",'/search/img/cb-search.png');
         show = false;
         time1 = 0;
     });
@@ -69,7 +69,7 @@ $(document).ready(function () {
         var _this = $('.search_input');
                 var id=10;
                 _this.append('<div class="search_btn" id="wb_'+id+'"></div>');
-                $('.s-img').attr("src",'search/img/cb-search-black.png');
+                $('.s-img').attr("src",'/search/img/cb-search-black.png');
         function a(){
             $(".cb-search-tool").fadeIn("fast");
             $(".cb-close-btn1").fadeIn("fast");
