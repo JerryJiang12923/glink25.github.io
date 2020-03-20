@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>picture game</title>
+	<style>
+	body {TEXT-ALIGN: center;}
+		#picform{
+			background-color: gray;
+			position: relative;
+			alignment-adjust: central;
+			width: 500px;
+			height: 500px;
+			MARGIN-RIGHT: auto; MARGIN-LEFT: auto;
+		}
+	</style>
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript">
+		var count=0;
+		var L=4;
+		function change(id_1,id_2){
+			var id1=document.getElementById(id_1);
+			var id2=document.getElementById(id_2);
+			var pos1top=id1.style.top;
+			var pos1left=id1.style.left;
+
+			var pos2top=id2.style.top;
+			var pos2left=id2.style.left;
+			$("#"+id_2).animate({top:pos1top,left:pos1left},"fast");
+			$("#"+id_1).animate({top:pos2top,left:pos2left},"fast");
+			id1.id=id_2;
+			id2.id=id_1;
+		}
+
+		function qchange(id_1,id_2){
+			var id1=document.getElementById(id_1);
+			var id2=document.getElementById(id_2);
+			var pos1top=id1.style.top;
+			var pos1left=id1.style.left;
+
+			var pos2top=id2.style.top;
+			var pos2left=id2.style.left;
+
+			$("#"+id_2).animate({top:pos1top,left:pos1left},0);
+			$("#"+id_1).animate({top:pos2top,left:pos2left},0);
+
+			id1.id=id_2;
+			id2.id=id_1;
+		}
+
+		var pic_arr = new Array();
+	
+
+		function createpic(){
+			var bianchang=480;
+
+			for(var i = 0;i<10;i++){
+					  pic_arr[i] = new Array();
+					  for(var j = 0;j<10;j++){
+					    pic_arr[i][j] = 100;
+					  }
+					}
+
+			for(var i = 0;i<L;i++){
+			  //pic_arr[i] = new Array();
+			  for(var j = 0;j<L;j++){
+			    pic_arr[i][j] = i*L+j;
+			  }
+			}
+
+			var imgsrc="img/test.jpg";
+			var picform=document.getElementById("picform");
+            for (var i = 0; i < L; i++) {
+            	for(var j=0; j < L; j++){
+	            	var pic=i*L+j;
+	            	var picdiv=document.createElement("div");
+	            	picdiv.id=pic;
+	            	var picchang=(bianchang)/L;
+	            	width = picchang-5+"px";
+	              	picdiv.style.width=picchang-5+"px";
+	            	picdiv.style.height=picchang-5+"px";
+	            	var left=j*picchang+10+"px";
+	            	var top=i*picchang+10+"px";
+	            	var tw="-"+(i*picchang+100)+"px";
+	            	var lw="-"+(j*picchang+100)+"px";
+	            	picdiv.style.left = left;
+	            	picdiv.style.top=top;
+	            	picdiv.style.position="absolute";
+	            	picdiv.style.backgroundImage =" url('"+imgsrc+"')";
+	            	//picdiv.style.clip = "rec("+top+" "+left+" "+tw+" "+lw+")";
+	            	pos=lw+" "+tw;
+	            	picdiv.style.backgroundPosition =pos;
+	            	if(pic==L*L-1){
+	            		picdiv.style.backgroundImage ="NONE";
+	            		picdiv.style.backgroundColor = 'gray';
+	            		picdiv.style.zIndex="-1"}
+	            	picdiv.onclick=function(){move(this.id,L)};
+	            	picform.appendChild(picdiv);
+	            	
+	            }
+            } 
+        }
+
+    	function isSuc(){
+    		//判断是否成功
+            var flag=0;
+            for(var i = 0;i<L;i++){
+			  //pic_arr[i] = new Array();
+			  for(var j = 0;j<L;j++){
+			    if(pic_arr[i][j] == i*L+j)flag=flag+0;
+			    else flag=flag+1;
+			  }
+			}
+			if(flag==0){console.log("success");document.getElementById("info").innerText="success";}
+			else document.getElementById("info").innerText="continue";
+    	}
+    	var last_id=L*L-1;
+
+        function move(id){
+        	idc=parseInt(id);
+        	lc=parseInt(L);
+        	var last=L*L-1;
+        	var input="f";
+        	m=parseInt(idc/lc);
+        	n=parseInt(idc%lc);
+        	var m1=0,n1=0;
+        	
+        	var curr_id=id;
+        	console.log(curr_id+" "+m+" "+n+" "+pic_arr[m][n]+" "+id);
+        
+	        	if(typeof(pic_arr[m+1][n])!='undefined'&&pic_arr[m+1][n]==last){input="w"
+						m1=m+1;n1=n;
+						pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                change(last_id,curr_id)
+		                last_id=curr_id;
+		                count+=1;
+	        								};//下方为空
+	        
+	        	if(typeof(pic_arr[m][n-1])!='undefined'&&pic_arr[m][n-1]==last){input="d"
+	        			m1=m;n1=n-1;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                change(last_id,curr_id)
+		                last_id=curr_id;
+		                count+=1;
+		                					};//左边为空
+	        	if(typeof(pic_arr[m][n+1])!='undefined'&&pic_arr[m][n+1]==last){input="a"
+	        			m1=m;n1=n+1;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                change(last_id,curr_id);
+		                last_id=curr_id;
+		                count+=1;
+		                					};//右边为空
+		        if(typeof(pic_arr[m-1][n])!='undefined'&&pic_arr[m-1][n]==last){input="s"
+	        			m1=m-1;n1=n;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                change(last_id,curr_id)
+		                last_id=curr_id;
+		                count+=1;
+		                					};//上方为空
+        	document.getElementById("count").innerText=count;
+        	isSuc();
+        	//console.log(input);
+        	// for (var i =0; i<L; i++) {
+        	// 	for(var j=0;j<L;j++){console.log(pic_arr[i][j])}console.log("")
+        	// }
+    }
+
+    function qmove(id){
+        	idc=parseInt(id);
+        	lc=parseInt(L);
+        	var last=L*L-1;
+        	var input="f";
+        	m=parseInt(idc/lc);
+        	n=parseInt(idc%lc);
+        	var m1=0,n1=0;
+        	
+        	var curr_id=id;
+        	console.log(curr_id+" "+m+" "+n+" "+pic_arr[m][n]+" "+id);
+        
+	        	if(typeof(pic_arr[m+1][n])!='undefined'&&pic_arr[m+1][n]==last){input="w"
+						m1=m+1;n1=n;
+						pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                qchange(last_id,curr_id)
+		                last_id=curr_id;
+	        								};//下方为空
+	        
+	        	if(typeof(pic_arr[m][n-1])!='undefined'&&pic_arr[m][n-1]==last){input="d"
+	        			m1=m;n1=n-1;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                qchange(last_id,curr_id)
+		                last_id=curr_id;
+		                					};//左边为空
+	        	if(typeof(pic_arr[m][n+1])!='undefined'&&pic_arr[m][n+1]==last){input="a"
+	        			m1=m;n1=n+1;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                qchange(last_id,curr_id);
+		                last_id=curr_id;
+		                					};//右边为空
+		        if(typeof(pic_arr[m-1][n])!='undefined'&&pic_arr[m-1][n]==last){input="s"
+	        			m1=m-1;n1=n;
+	        			pic_arr[m1][n1]=pic_arr[m][n];
+						pic_arr[m][n]=last;
+		                qchange(last_id,curr_id)
+		                last_id=curr_id;
+		                					};//上方为空
+        	
+        	isSuc();
+        	// console.log(input);
+        	// for (var i =0; i<L; i++) {
+        	// 	for(var j=0;j<L;j++){console.log(pic_arr[i][j])}console.log("")
+        	// }
+    }
+
+    var cur=L*L-1;
+    function random_click(){
+    	var c=1000;
+    	//var cur=L*L-1;
+    	
+    	//qmove(11);
+    	// var w,s,a,d;
+    	// var random_arr=new Array();
+		for(var j=0;j<c;j++){
+    		var ret =Math.round(Math.random()*3);
+    		/*
+    		w=cur-L;
+    		s=cur+L;
+    		a=cur-1;
+    		d=cur+1;
+			*/
+    		var x = parseInt(cur / L);
+    		var y = parseInt(cur % L);
+
+    		var dx =new Array(-1,1,0,0);
+    		var dy = new Array(0,0,-1,1);
+
+    		for(var i = 0 ; i < 4 ; ++i){
+    			var tmp = (i+ret)%4;
+    			var nx = x + dx[tmp];
+    			var ny = y + dy[tmp];
+
+    			if(nx>=0 && nx < L && ny >=0 && ny < L){
+    				cur = nx*L + ny;
+    				console.log(nx+" "+ny);
+    				break;
+    			}
+    			else {j=j-1;break;}
+
+    		}
+
+    		/*
+    		switch(x){
+    			case 0:if(w<L*L-1&&w>0){random_arr[i]=w;cur=w};break;
+    			case 1:if(s<L*L-1&&s>0){random_arr[i]=s;cur=s};break;
+    			case 2:if(a<L*L-1&&a>0){random_arr[i]=a;cur=a};break;
+    			case 3:if(d<L*L-1&&d>0){random_arr[i]=d;cur=d};break;
+    		}
+    		*/
+    		qmove(cur);
+    	}
+    }
+       
+	</script>
+</head>
+<body onload="createpic()">
+	<div id="picform">
+		
+	</div>
+	<button onclick="random_click()">start</button>
+	<div id="info">game</div>
+	<div >steps:</div><div id="count">0</div>
+
+</body>
+</html>

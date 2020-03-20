@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script>
+	var now = new Date();
+	var year = now.getFullYear(); //得到年份
+	var month = now.getMonth();//得到月份
+	var date = now.getDate();//得到日期
+	var day = now.getDay();//得到周几
+	var hour = now.getHours();//得到小时
+	var minu = now.getMinutes();//得到分钟
+	var sec = now.getSeconds();//得到秒
+
+	var daypass= (hour*60+minu)*60+sec;//计算剩余秒数
+	var dayleft=86400-daypass;
+
+	var weekpass=parseInt(now.getDay());
+if(weekpass==0)weekpass=7
+	var weekleft=7-weekpass;
+
+	var monthend=new Date(now.getMonth()+'/'+'1'+'/'+now.getFullYear());monthend.setMonth(now.getMonth()+1);
+	mleft = parseInt(Math.abs(monthend - now) / 1000 / 60 / 60 / 24);
+	mdays=mleft+parseInt(now.getDate());
+
+	var yearend=new Date('1'+'/'+'1'+'/'+now.getFullYear());yearend.setFullYear(now.getFullYear()+1);console.log()
+	yleft = parseInt(Math.abs(yearend - now) / 1000 / 60 / 60 / 24);
+	var yearst=new Date('1'+'/'+'1'+'/'+now.getFullYear());
+	ydays = parseInt(Math.abs(yearend - yearst) / 1000 / 60 / 60 / 24);
+	
+	var ppt=1-(yleft/ydays);
+	ppt-=0.00001;
+	document.documentElement.style.setProperty('--ppt',ppt);
+	var i=Math.floor(ppt*4);
+	pcolor1=["#388e3c","#1e88e5","#f4511e","#dd2c00"];
+	document.documentElement.style.setProperty('--pcolor',pcolor1[i]);
+
+
+	var names="";
+
+	var input=[daypass,86400,weekpass,7,parseInt(now.getDate()),mdays];
+	for(var i=0;i<6;i=i+2){
+		var pct=input[i]/input[i+1];
+		if(pct<=0.5){
+			var a=360*pct;
+			names+=a.toString()+';'+'0'+';'+'1'+';';
+			}else{
+				var a=(pct-0.5)*360;
+				names+='180'+';'+a.toString()+';'+'0'+';';
+			}
+	}
+	values=names.split(';')
+	
+	document.documentElement.style.setProperty('--jiao1a',values[0]);document.documentElement.style.setProperty('--jiao1b',values[1]);document.documentElement.style.setProperty('--bool1',values[2]);
+	document.documentElement.style.setProperty('--jiao2a',values[3]);document.documentElement.style.setProperty('--jiao2b',values[4]);document.documentElement.style.setProperty('--bool2',values[5]);
+	document.documentElement.style.setProperty('--jiao3a',values[6]);document.documentElement.style.setProperty('--jiao3b',values[7]);document.documentElement.style.setProperty('--bool3',values[8]);
+	
+	
+</script>
+<title>Days</title>
+	<!-- whole -->
+    <style>
+    :root{
+    	--weight:20px;
+		--pheight:100px;--pwidth:84vw;--ppt:0.1;
+		/* ppt为进度百分比 */
+		--piwidth:calc(var(--pwidth) * var(--ppt));
+		--pcolor:#f4511e;
+		
+    	--color1:#fa114f;--color2:#92e82a;--color3:#1eeaef; 
+
+    	--jiao1a:90;--jiao1b:0;--bool1:1;/*角1大于180度时bool为0，否则为1*/
+    	--jiao2a:90;--jiao2b:0;--bool2:1;
+    	--jiao3a:90;--jiao3b:0;--bool3:1;
+
+    	--speed1:calc(var(--jiao1a) / (var(--jiao1a) + var(--jiao1b)) * 1s);
+    	--speed2:calc(var(--jiao1b) / calc(var(--jiao1a) + var(--jiao1b)) * 1s);
+    	--speed3:calc(var(--jiao2a) / (var(--jiao2a) + var(--jiao2b)) * 1s);
+    	--speed4:calc(var(--jiao2b) / calc(var(--jiao2a) + var(--jiao2b)) * 1s);
+    	--speed5:calc(var(--jiao3a) / calc(var(--jiao3a) + var(--jiao3b)) * 1s);
+    	--speed6:calc(var(--jiao3b) / calc(var(--jiao3a) + var(--jiao3b)) * 1s);
+    }
+    *{
+    margin: 0; padding: 0;
+    font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+    }
+    body {
+    	background-color:black;
+    }
+    .ring-body{
+    	transition-duration: var(--test2);
+    	top: 3%;left: 3%;
+    	width:100%;
+    	position: fixed;
+    	z-index: -1;
+    }
+	</style>
+	<!-- cirle1 -->
+	<style type="text/css">
+    .wrap{
+    	top: 3%;left: 3%;
+    	display: inline-block;
+	    position: absolute;
+	    width: 200px;
+		height: 200px;
+		text-align: center;
+		
+    }
+        .outer{
+    	position: absolute;
+    	text-align: center;
+    	width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color1);
+		border-radius: 50%;
+		opacity: 0.4;
+		z-index: 8;
+	}
+	.head{
+		position: absolute;
+		right: calc(50% - 10px);
+		z-index: 9;
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:  100%;
+		opacity: 1;
+		background-color: var(--color1);
+	}
+	.circle{
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color1);
+		border-radius: 50%;
+	}
+	.circle:before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+		top: 0;
+		left: 50%;
+		border: var(--weight) solid var(--color1);
+		border-left: transparent;
+		border-radius:  0 100% 100% 0/ 0 50% 50% 0;
+		z-index: 2;
+	}
+	.left, .right{
+		position: absolute;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+	.left{
+		top: 0;
+		left: 0;
+		z-index: 1;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-radius:  100% 0 0 100%/50% 0 0 50%;
+		border-right: none;
+		transform-origin: center right;
+		animation: var(--speed2) back-half linear var(--speed1);
+		animation-fill-mode: forwards;
+	}
+	.headl{
+		position: absolute;
+		bottom: calc(var(--weight) * -1);
+		right: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+
+		border-radius:  100%;
+		animation: var(--speed2) head-back-half linear var(--speed1);
+		animation-fill-mode: forwards;
+		background-color: var(--color1);
+		opacity: 0;
+		box-shadow: -5px 0px 5px rgba(0,0,0,0.9);
+	}
+	.right{
+		top: 0;
+		z-index: 3;
+		left: 50%;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-left: none;
+		border-radius: 0 100% 100% 0/0 50% 50% 0;
+		transform-origin: center left;
+		animation: var(--speed1) front-half linear;
+		animation-fill-mode: forwards;
+
+	}
+	.headr{
+		position: absolute;
+		top: calc(var(--weight) * -1);left: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:  100%;
+		background-color: var(--color1);
+		box-shadow: 5px 0px 5px rgba(0,0,0,0.9) 
+	}
+	@keyframes front-half{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao1a) * 1deg));
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao1a) * 1deg) );
+		opacity: var(--bool1);
+		}
+	}
+	@keyframes back-half{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao1b) * 1deg));
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao1b) * 1deg));
+		opacity: 1;
+		}
+	}
+	@keyframes head-back-half{
+		0%{
+		opacity: 1;
+		}
+		100%{
+		opacity: calc(var(--jiao1a) + var(--jiao1b) * var(--bool1) - 179);
+		}
+	}
+    </style>
+	<!-- circle2 -->
+    <style type="text/css">
+    /*circle2*/
+    .wrap2{
+    	top: 11%;left: 11%;
+    	display: inline-block;
+	    position: absolute;
+	    width: 78%;
+		height: 78%;
+		text-align: center;
+		
+    }
+        .outer2{
+    	position: absolute;
+    	text-align: center;
+    	width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color2);
+		border-radius: 50%;
+		opacity: 0.4;
+		z-index: 8;
+	}
+	.head2{
+		position: absolute;
+		right: calc(50% - 10px);
+		z-index: 9;
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:  100%;
+		opacity: 1;
+		background-color: var(--color2);
+	}
+	.circle2{
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color2);
+		border-radius: 50%;
+	}
+	.circle2:before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+		top: 0;
+		left: 50%;
+		border: var(--weight) solid var(--color2);
+		border-left: none;
+		border-radius:  0 100% 100% 0/ 0 50% 50% 0;
+		z-index: 2;
+	}
+	.left2, .right2{
+		position: absolute;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+	.left2{
+		top: 0;
+		left: 0;
+		z-index: 1;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-radius:  100% 0 0 100%/50% 0 0 50%;
+		border-right: none;
+		transform-origin: center right;
+		animation: var(--speed4) back-half2 linear var(--speed3);
+		animation-fill-mode: forwards;
+	}
+	.headl2{
+		position: absolute;
+		bottom: calc(var(--weight) * -1);
+		right: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:100%;
+		animation: var(--speed4) head-back-half2 linear var(--speed3);
+		animation-fill-mode: forwards;
+		background-color: var(--color2);
+		opacity: 0;
+	}
+	.right2{
+		top: 0;
+		z-index: 3;
+		left: 50%;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-left: none;
+		border-radius: 0 100% 100% 0/0 50% 50% 0;
+		transform-origin: center left;
+		animation: var(--speed3) front-half2 linear;
+		animation-fill-mode: forwards;
+
+	}
+	.headr2{
+		position: absolute;
+		top: calc(var(--weight) * -1);left: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:  100%;
+		background-color: var(--color2);
+	}
+	@keyframes front-half2{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao2a) * 1deg) );
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao2a) * 1deg) );
+		opacity: var(--bool2);
+		}
+	}
+	@keyframes back-half2{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao2b) * 1deg) );
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao2b) * 1deg) );
+		opacity: 1
+		}
+	}
+	@keyframes head-back-half2{
+		0%{
+		opacity: 1;
+		}
+		100%{
+		opacity: calc(var(--jiao2a) + var(--jiao2b) * var(--bool2) - 179);;
+		}
+	}
+    </style>
+	<!-- circle3 -->
+    <style type="text/css">
+    .wrap3{
+    	top: 14%;left: 14%;
+    	display: inline-block;
+	    position: absolute;
+	    width: 72%;
+		height: 72%;
+		text-align: center;
+		
+    }
+    .outer3{
+    	position: absolute;
+    	text-align: center;
+    	width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color3);
+		border-radius: 50%;
+		opacity: 0.4;
+		z-index: 8;
+	}
+	.head3{
+		position: absolute;
+		right: calc(50% - 10px);
+		z-index: 9;
+		width: var(--weight);
+		height: var(--weight);
+		border-radius:  100%;
+		opacity: 1;
+		background-color: var(--color3);
+	}
+	.circle3{
+		height: 100%;
+		box-sizing: border-box;
+		border: var(--weight) solid var(--color3);
+		border-radius: 50%;
+	}
+	.circle3:before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+		top: 0;
+		left: 50%;
+		border: var(--weight) solid var(--color3);
+		border-left: transparent;
+		border-radius:  0 100% 100% 0/ 0 50% 50% 0;
+		z-index: 2;
+		opacity: 1; 
+	}
+	.left3, .right3{
+		position: absolute;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+	.left3{
+		top: 0;
+		left: 0;
+		z-index: 1;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-radius:  100% 0 0 100%/50% 0 0 50%;
+		border-right: none;
+		transform-origin: center right;
+		animation: var(--speed6) back-half3 linear var(--speed5);
+		animation-fill-mode: forwards;
+	}
+	.headl3{
+		position: absolute;
+		bottom: calc(var(--weight) * -1);
+		right: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+		border-radius: 100%;
+		animation: var(--speed6) head-back-half3 linear var(--speed5);
+		animation-fill-mode: forwards;
+		background-color: var(--color3);
+		opacity: 0;
+		box-shadow: -5px 0px 5px rgba(0,0,0,0.9);
+	}
+	.right3{
+		top: 0;
+		left: 100%;
+		z-index: 3;
+		left: 50%;
+		height: 100%;
+		border: calc(var(--weight)) solid black;
+		border-left: none;
+		border-radius: 0 100% 100% 0/0 50% 50% 0;
+		transform-origin: center left;
+		animation: var(--speed5) front-half3 linear;
+		animation-fill-mode: forwards;
+
+	}
+	.headr3{
+		position: absolute;
+		top: calc(var(--weight) * -1);left: calc(var(--weight) * -1 / 2);
+		width: var(--weight);
+		height: var(--weight);
+		border-radius: 100%;
+		background-color: var(--color3);
+		box-shadow: 5px 0px 5px rgba(0,0,0,0.9);
+	}
+	@keyframes front-half3{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao3a) * 1deg) );
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao3a) * 1deg) );
+		opacity: var(--bool3);
+		}
+	}
+	@keyframes back-half3{
+		0%{
+		transform: rotate( 0 );
+		}
+		99%{
+		transform: rotate( calc(var(--jiao3b) * 1deg) );
+		opacity: 1;
+		}
+		100%{
+		transform: rotate( calc(var(--jiao3b) * 1deg) );
+		opacity: 1;
+		}
+	}
+	@keyframes head-back-half3{
+		0%{
+		opacity: 1;
+		}
+		100%{
+		opacity: calc(var(--jiao3a) + var(--jiao3b) * var(--bool3) - 179);
+		}
+	}
+    </style>
+	<!-- else -->
+    <style type="text/css">
+    .fix1{
+    	z-index: 100;
+    	position: relative;
+    	right: 8%;
+    	height: 20px;
+    	text-align: right;
+    	color:white;
+    	font-size: 0.95em;
+    }
+    .days{
+    	z-index: 100;
+    	position: relative;
+    	right: 8%;
+    	text-align: right;
+    	color:white;
+    	font-size: 0.95em;
+    	
+    }
+    </style>
+	<!-- prograssbar -->
+	<style>
+	.prograss-bar{
+    	display: inline-block;
+	    position: absolute;
+		top: 250px;
+	    width: 100%;
+		height: var(--pheight);
+		text-align: left;
+	}
+	.pouter,.pinner{
+		left: calc(3% + var(--weight) / 2);
+	}
+	.pouter{
+		position:absolute;
+		width: var(--pwidth);
+		height: var(--weight);
+		border: none;
+		padding: 0;
+		margin-right: 0;
+		border-radius: 0;
+		background-color: var(--pcolor);
+		opacity: 0.3;
+	}
+	.pouter::before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--weight) * -0.5);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+	.pouter::after{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--pwidth) - var(--weight) / 2);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+
+	.pinner{
+		--piw:0px;
+		position:absolute;
+		top:0;
+		width: var(--piw);
+		height: var(--weight);
+		border: none;
+		border-radius: 0;
+		background-color: var(--pcolor);
+		animation: 1s growbar ease forwards;
+	}
+	.pinner::before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--weight) * -0.5);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+	.pinner::after{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--piw) - var(--weight) / 2);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+
+		background-color: var(--pcolor);
+		animation: 1s growbar-af ease forwards;
+	}
+
+	.years{
+		position: relative;
+		right: 8%;
+		top: -20px;
+		font-size: 0.95em;
+		color: white;
+	}
+	.years strong{
+		font-size: 2.25em;
+		color: var(--pcolor);
+	}
+
+	@keyframes growbar {
+		0%{
+			width: 0;
+		}
+
+		100%{
+			width: var(--piwidth);
+		}
+	}
+	@keyframes growbar-af {
+		0%{
+			left: calc(var(--piw) - var(--weight) / 2);
+		}
+
+		100%{
+			left: calc(var(--piwidth) - var(--weight) / 2);
+		}
+	}
+	</style>
+	<!-- content -->
+    <style type="text/css">
+    .fix{
+    	width: 100%;
+    	height: calc(var(--pheight) + 220px);
+		z-index: 9;
+    	opacity: 0;
+    }
+	.content{
+		overflow-y: hidden;
+		background-color: #efeff2;
+		z-index: 999;
+		width: 100%;
+		min-height: 80vh;
+		border-radius: 10px 10px 0 0;
+		box-shadow: 0 0 10px rgba(95,95,95,.48);
+	}
+	.content .title{
+		text-align:center;
+		padding-top: 5px;  
+		padding-left: 10px;
+		font-size: 1em;
+		font-weight: bold;
+	}
+	ul{
+		padding:10px;
+		position: inherit;
+		opacity: 0;
+		animation: 1s ul-show linear;
+		animation-fill-mode: forwards;
+
+	}
+	ul li{
+		list-style: none;
+		padding:10px;
+		margin-bottom: 10px;
+		font-size: 20px;
+		height: 80px;
+		border: 1px solid rgba(200,200,200,0.5);
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(95,95,95,.48);
+	}
+	.li-left{
+		position: relative;
+		text-align:left;
+		color: white;
+		left: 0px;
+		top: 58px;
+
+
+
+	}
+	.li-right{
+		position: relative;
+		text-align:right;
+		color: white;
+		right: 0px;
+		top: 8px;
+	}
+	.li-left strong{
+		color: white;
+
+
+	}
+	.li-right strong{
+		font-size: 40px;
+		color: white;
+	}
+
+	.footer{
+		padding: 0;
+		margin: 0;
+		border: none;
+		overflow-y: hidden;
+		background-color: #efeff2;
+		z-index: 999;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+		font-size: 0.2em;
+		color: gray;
+	}
+
+	@keyframes ul-show{
+		0%{
+		top: -100px
+		opacity: 0;
+		}
+		100%{
+		top: 0;
+		opacity: 1;
+		}
+	}
+
+	</style>
+</head>
+<body>
+	<div class="ring-body">
+		<div class="wrap">
+			<div class="outer"></div>
+			<div class="head"></div>
+			<div class="circle"></div>
+			<div class="right"><div class="headr"></div></div>	
+			<div class="left"><div class="headl"></div></div>
+
+				<div class="wrap2">
+					<div class="outer2"></div>
+					<div class="head2"></div>
+					<div class="circle2"></div>
+					<div class="right2"><div class="headr2"></div></div>
+					<div class="left2"><div class="headl2"></div></div>
+
+					<div class="wrap3">
+						<div class="outer3"></div>
+						<div class="head3"></div>
+						<div class="circle3"></div>
+						<div class="right3"><div class="headr3"></div></div>
+						<div class="left3"><div class="headl3"></div></div>
+						
+					</div>
+					
+				</div>
+		</div>
+
+		<div class="fix1"></div>
+		<p class="days">时间在流逝：</p>
+		<p class="days" id="p1"><span>今年还有</span><strong style="color: var(--pcolor);font-size: 2.25em;">365</strong>天</p>
+		<p class="days" id="p2"><span>本周剩余</span><strong style="color: var(--color2);font-size: 2.25em;">4</strong>/7天</p>
+		<p class="days" id="p3"><span>本月剩余</span><strong style="color: var(--color3);font-size: 2.25em;">10</strong><span>/30</span>天</p>
+		<p class="days" id="p4"><span>今日还剩下</span><strong  id="sec" style="color: var(--color1); font-size:2.5em;">86400</strong>秒</p>
+
+		<div class="prograss-bar">
+			<div class="pouter"></div>
+			<div class="pinner"></div>
+		</div>
+	</div>
+	
+	<div class="fix"></div>
+	<div class="content" id="all-content">
+<p class="title">临近日程</p>
+		<ul>
+			<li>
+				<div class="li-left">距离<strong>毕业</strong>还有</div>
+				<div class="li-right"><strong>60</strong>天</div>
+			</li>
+<li>
+				<div class="li-left">距离<strong>劳动节</strong>还有</div>
+				<div class="li-right"><strong>20</strong>天</div>
+			</li>
+<li>
+				<div class="li-left">距离<strong>清明节</strong>还有</div>
+				<div class="li-right"><strong>12</strong>天</div>
+			</li>
+		</ul>
+<p class="title">我的日子</p>
+		<ul>
+			<li>
+				<div class="li-left">距离<strong>在一起</strong>已经过了</div>
+				<div class="li-right"><strong>86</strong>天</div>
+			</li>
+<li>
+				<div class="li-left">距离<strong>毕设截止</strong>还有</div>
+				<div class="li-right"><strong>42</strong>天</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="footer">Copyright  2020 无良的北极 Rights Reserved.</div>
+</body>
+<script type="text/javascript">
+	var lefts=document.getElementsByClassName("li-left");
+	for (let j = 0; j < lefts.length; j++) {
+		var lcontents=lefts[j].getElementsByTagName("strong");
+		if(lcontents[0].innerHTML.length>10)
+		lcontents[0].innerHTML=lcontents[0].innerHTML.substring(0,10);console.log(lcontents[0].innerHTML)
+			
+	}
+
+	var level=[0,10,30,60,100,365,500,1000];
+	var colors=["#00838F","#00695C","#2E7D32","#558B2F","#9E9D24","#F9A825","#FF8F00","#EF6C00"];
+	var all=document.getElementById("all-content");
+	var ul=all.getElementsByTagName('ul');
+	var li=document.getElementsByTagName('li');
+	var lis=Array.from(li);
+	lis.forEach(setbgcolor);
+	function setbgcolor(e,index){
+		var strongs=li[index].getElementsByTagName("strong");
+		var nums=strongs[1];
+		var num=parseInt(nums.innerHTML);
+		var i=0;
+		var l=colors.length-1;
+		for(i=0;i<level.length;i++){
+			if(num>=level[i] && num<level[i+1]){l=i;break;}
+		}
+		li[index].style.backgroundColor =colors[l];
+	}
+
+	var frontmsg1=["今年还有","本周剩余","本月剩余","今日还剩下"];
+	var frontmsg2=["今年已过","本周已过","本月已过","今日已过了"];
+	var timeflag;
+	showleft();
+	var boool=true;
+	document.getElementsByClassName("fix")[0].onclick=function(){
+		boool=!boool;
+		clearInterval(timeflag)
+		if(boool){
+			showleft();
+		}else{
+			showpass();
+		}
+	}
+	
+	var dayleft1=dayleft;
+	var daypass1=daypass;
+	setInterval(function(){
+		var seconds=document.getElementById("sec");
+		dayleft1=dayleft1-1;
+		daypass1=daypass1+1
+		if(boool){seconds.innerHTML=parseInt(dayleft1);}
+		else {seconds.innerHTML=parseInt(daypass1);}
+	},'1000')
+
+
+	function showpass(){
+		document.getElementById("p1").getElementsByTagName("strong")[0].innerHTML=parseInt(ydays-yleft);
+		document.getElementById("p1").getElementsByTagName("span")[0].innerHTML=frontmsg2[0];
+		
+		document.getElementById("p2").getElementsByTagName("strong")[0].innerHTML=weekpass;
+		document.getElementById("p2").getElementsByTagName("span")[0].innerHTML=frontmsg2[1];
+
+		document.getElementById("p3").getElementsByTagName("strong")[0].innerHTML=parseInt(mdays-mleft);
+		document.getElementById("p3").getElementsByTagName("span")[0].innerHTML=frontmsg2[2];
+		document.getElementById("p3").getElementsByTagName("span")[1].innerHTML="/"+mdays;
+		
+		document.getElementById("p4").getElementsByTagName("span")[0].innerHTML=frontmsg2[3];
+		document.getElementById("p4").getElementsByTagName("strong")[0].innerHTML=parseInt(daypass);
+	}
+
+	function showleft(){
+		document.getElementById("p1").getElementsByTagName("strong")[0].innerHTML=yleft;
+		document.getElementById("p1").getElementsByTagName("span")[0].innerHTML=frontmsg1[0];
+		
+		document.getElementById("p2").getElementsByTagName("strong")[0].innerHTML=weekleft;
+		document.getElementById("p2").getElementsByTagName("span")[0].innerHTML=frontmsg1[1];
+
+		document.getElementById("p3").getElementsByTagName("strong")[0].innerHTML=mleft;
+		document.getElementById("p3").getElementsByTagName("span")[0].innerHTML=frontmsg1[2];
+		document.getElementById("p3").getElementsByTagName("span")[1].innerHTML="/"+mdays;
+		
+		document.getElementById("p4").getElementsByTagName("span")[0].innerHTML=frontmsg1[3];
+		document.getElementById("p4").getElementsByTagName("strong")[0].innerHTML=dayleft;
+	}
+</script>
+</html>
