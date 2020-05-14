@@ -1,0 +1,20 @@
+{"version":
+  {
+  "acserver":
+    {
+    "name":"AutoCuts Server",
+    "version":"1",
+    "url":"",
+    "description":""
+    }
+  }
+  {    
+  "acrunon":    
+    {    
+    "name":"AutoCuts Server", 
+    "version":"1", 
+    "url":"", 
+    "description":""   
+    }    
+  } 
+}
