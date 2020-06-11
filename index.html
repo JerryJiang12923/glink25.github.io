@@ -1,44 +1,1208 @@
----
-layout: page
-description: "Half a loaf is better than none."
----
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="cache-control"content="no-cache"/>
+	<meta content="yes"name="apple-touch-fullscreen">
+	<meta content="yes"name="apple-mobile-web-app-capable">
+	<meta content="black-translucent"name="apple-mobile-web-app-status-bar-style">
+	<meta name="apple-mobile-web-app-capable"content="yes">
+	<meta name="viewport"content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://ftp.bmp.ovh/imgs/2020/05/d9384103e3ec7d39.png" />
 
-{% for post in paginator.posts %}
+	<script src="./js/vue.js"></script>
+	<!-- 引入样式 -->
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- 引入组件库 -->
+    <script src="./js/index.js"></script>
 
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
+<script>
+	var now = new Date();
+	var year = now.getFullYear(); //得到年份
+	var month = now.getMonth();//得到月份
+	var date = now.getDate();//得到日期
+	var day = now.getDay();//得到周几
+	var hour = now.getHours();//得到小时
+	var minu = now.getMinutes();//得到分钟
+	var sec = now.getSeconds();//得到秒
+
+	var daypass= (hour*60+minu)*60+sec;//计算剩余秒数
+	var dayleft=86400-daypass;
+
+	var weekpass=parseInt(now.getDay());
+if(weekpass==0)weekpass=7
+	var weekleft=7-weekpass;
+
+	var monthend=new Date(now.getMonth()+'/'+'1'+'/'+now.getFullYear());monthend.setMonth(now.getMonth()+1);
+	mleft = parseInt(Math.abs(monthend - now) / 1000 / 60 / 60 / 24);
+	mdays=mleft+parseInt(now.getDate());
+
+	var yearend=new Date('1'+'/'+'1'+'/'+now.getFullYear());yearend.setFullYear(now.getFullYear()+1);console.log()
+	yleft = parseInt(Math.abs(yearend - now) / 1000 / 60 / 60 / 24);
+	var yearst=new Date('1'+'/'+'1'+'/'+now.getFullYear());
+	ydays = parseInt(Math.abs(yearend - yearst) / 1000 / 60 / 60 / 24);
+	
+	var ppt=1-(yleft/ydays);
+	ppt-=0.00001;
+	document.documentElement.style.setProperty('--ppt',ppt);
+	var i=Math.floor(ppt*4);
+	pcolor1=["#388e3c","#1e88e5","#f4511e","#dd2c00"];
+	document.documentElement.style.setProperty('--pcolor',pcolor1[i]);
+
+	var DayAngle=parseInt(daypass/86400*360)
+	var WeekAngle=parseInt(weekpass/7*360)
+	var MonthAngle=parseInt((mdays-mleft)/mdays*360)
+	//console.log(DayAngle+" "+WeekAngle+" "+MonthAngle)
+	
+</script>
+<title>我的日子</title>
+	<!-- whole -->
+    <style>
+    :root{
+    	--weight:20px;
+		--pheight:100px;--pwidth:84vw;--ppt:0.1;
+		/* ppt为进度百分比 */
+		--piwidth:calc(var(--pwidth) * var(--ppt));
+		--pcolor:#f4511e;
+    	--color1:#fa114f;--color2:#92e82a;--color3:#1eeaef; 
+    }
+    *{
+    margin: 0; padding: 0;
+    font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+    }
+	a {
+	-webkit-tap-highlight-color: transparent !important;
+	-webkit-touch-callout: none !important;
+	-webkit-user-select: none !important;
+	-webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+	}
+    body {
+    	background-color:black;
+    }
+    .ring-body{
+    	transition-duration: var(--test2);
+    	top: 3%;left: 3%;
+    	width:100%;
+    	position: fixed;
+    	z-index: -4;
+    }
+	</style>
+	<!-- cirle1 -->
+	<style type="text/css">
+    .wrap{
+    	top: 3%;left: 3%;
+    	display: inline-block;
+	    position: absolute;
+	    width: 200px;
+		height: 200px;
+		text-align: center;
+		
+    }
+    </style>
+	<!-- else -->
+    <style type="text/css">
+    .fix1{
+    	z-index: 100;
+    	position: relative;
+    	right: 8%;
+    	height: 20px;
+    	text-align: right;
+    	color:white;
+    	font-size: 0.95em;
+    }
+    .days{
+    	z-index: 100;
+    	position: relative;
+    	right: 8%;
+    	text-align: right;
+    	color:white;
+    	font-size: 0.95em;
+    	
+    }
+	#fix2{
+		touch-action: none;
+		z-index: -1;
+		position: fixed;
+		width: 100%;
+		height: 30%;
+		bottom: 0;
+		left: 0;
+		background-color: black;
+	}
+    </style>
+	<!-- prograssbar -->
+	<style>
+	.prograss-bar{
+    	display: inline-block;
+	    position: absolute;
+		top: 250px;
+	    width: 100%;
+		height: var(--pheight);
+		text-align: left;
+	}
+	.pouter,.pinner{
+		left: calc(3% + var(--weight) / 2);
+	}
+	.pouter{
+		position:absolute;
+		width: var(--pwidth);
+		height: var(--weight);
+		border: none;
+		padding: 0;
+		margin-right: 0;
+		border-radius: 0;
+		background-color: var(--pcolor);
+		opacity: 0.3;
+	}
+	.pouter::before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--weight) * -0.5);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+	.pouter::after{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--pwidth) - var(--weight) / 2);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+
+	.pinner{
+		--piw:0px;
+		position:absolute;
+		top:0;
+		width: var(--piw);
+		height: var(--weight);
+		border: none;
+		border-radius: 0;
+		background-color: var(--pcolor);
+		animation: 1s growbar ease forwards;
+	}
+	.pinner::before{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--weight) * -0.5);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+		z-index: 2;
+		background-color: var(--pcolor);
+	}
+	.pinner::after{
+		content: '';
+		position: absolute;
+		display: block;
+		width: var(--weight);
+		height: var(--weight);
+		box-sizing: border-box;
+		top: 0;
+		left: calc(var(--piw) - var(--weight) / 2);
+		border: 0 solid var(--color1);
+		border-right: transparent;
+		border-radius:  100%;
+
+		background-color: var(--pcolor);
+		animation: 1s growbar-af ease forwards;
+	}
+
+	.years{
+		position: relative;
+		right: 8%;
+		top: -20px;
+		font-size: 0.95em;
+		color: white;
+	}
+	.years strong{
+		font-size: 2.25em;
+		color: var(--pcolor);
+	}
+
+	@keyframes growbar {
+		0%{
+			width: 0;
+		}
+
+		100%{
+			width: var(--piwidth);
+		}
+	}
+	@keyframes growbar-af {
+		0%{
+			left: calc(var(--piw) - var(--weight) / 2);
+		}
+
+		100%{
+			left: calc(var(--piwidth) - var(--weight) / 2);
+		}
+	}
+	</style>
+	<!-- content -->
+    <style type="text/css">
+    .fix{
+    	width: 100%;
+    	height: calc(var(--pheight) + 220px);
+		z-index: 9;
+    	opacity: 0;
+    }
+	.content{
+		overflow-y: hidden;
+		background-color: #efeff2;
+		z-index: 999;
+		width: 100%;
+		min-height: 60vh;
+		border-radius: 10px 10px 0 0;
+	}
+	.content .title{
+		text-align:center;
+		padding-top: 5px;  
+		padding-left: 10px;
+		font-size: 1em;
+		font-weight: bold;
+	}
+	.ul{
+		padding:10px;
+		position: inherit;
+		opacity: 0;
+		animation: 1s ul-show linear;
+		animation-fill-mode: forwards;
+
+	}
+	#my_list{
+		min-height: calc(60vh - 300px);
+	}
+    .mint-cell-swiper{
+        border-radius: 10px !important;
+        margin-bottom: 10px;
+        background-color: #efeff2 !important;
+    }
+    .mint-cell{
+        border-radius: 10px !important;
+        margin-bottom: 10px;
+        background-color: #efeff2;
+    }
+    .mint-cell-wrapper{
+        border-radius: 10px !important;
+        margin: 0;
+        padding: 0;
+        height: 100px;
+    }
+    .mint-cell-swipe-buttongroup{
+        border-radius: 0 10px 10px 0 !important;
+    }
+    .mint-cell-right{
+        z-index: 0;
+        background-color: red !important;
+        border-radius: 0 10px 10px 0;
+        color: #fff;
+        margin-left:100px !important;
+        width:60px;
+        height:100px;
+    }
+    .mint-cell-swipe-buttongroup{
+        z-index: 0;
+        justify-content: flex-end;
+    }
+	.mint-cell-value{
+		position: absolute;
+        top: 0;right: 0;
+		list-style: none;
+        width: calc(100% - 20px);
+        height: 100px;
+		padding:10px;
+		margin-bottom: 10px;
+		font-size: 20px;
+		height: 80px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(95,95,95,.48);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: nowrap;
+	}
+	.li-left{
+		color: white;
+	}
+	.li-right{
+		color: white;
+	}
+	.li-left strong{
+		color: white;
+	}
+	.li-right strong{
+		font-size: 40px;
+		color: white;
+	}
+	.mint-button,.mint-button--default,.mint-button--normal{
+		background-color: transparent;
+		border: 0;
+		box-shadow: none;
+	}
+
+	.footer{
+		padding: 0;
+		margin: 0;
+		border: none;
+		overflow-y: hidden;
+		background-color: #efeff2;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+		font-size: 8px;
+		color: gray;
+	}
+	.footers{
+		border: none;
+		overflow-y: hidden;
+		background-color: #efeff2;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+		font-size: 8px;
+		color: gray;
+		display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;
+	}
+
+	@keyframes ul-show{
+		0%{
+		top: -100px;
+		opacity: 0;
+		}
+		100%{
+		top: 0;
+		opacity: 1;
+		}
+	}
+    .mint-popup,.mint-popup-right{
+        position: fixed;
+		touch-action: none;
+        top: -50%;
+        left: 0;
+        width: 100%;
+        height: 300%;
+		margin: 0;
+		padding: 0;
+        background-color: turquoise;
+    }
+
+
+	</style>
+	<!-- panel -->
+	<style>
+		#panel_gray{
+			touch-action: none;
+			position: fixed;
+			left: 0;top: -50%;
+			width: 100%;
+			height: 150%;
+			z-index: 100;
+			background-color: black;
+			opacity: 0.5;
+
+		}
+		.panel_gray_ani-enter-active{
+			animation: fades 0.5s ease;
+		}.panel_gray_ani-leave-active{
+			animation: fades 0.5s ease reverse;
+		}
+		@keyframes fades {
+			0%{
+				opacity: 0;
+			}
+			100%{
+				opacity: 0.5;
+			}
+		}
+
+		.panel_body_ani-enter-active{
+			animation: slides 0.3s ease;
+		}.panel_body_ani-leave-active{
+			animation: slides 0.3s ease reverse;
+		}
+		@keyframes slides {
+			0%{
+				bottom: -50%;
+			}
+			100%{
+				bottom: 0;
+			}
+		}
+
+		#panel_body{
+			touch-action: none;
+			position: fixed;
+			left: 0;bottom: 0;
+			border-radius: 10px 10px 0 0;
+			width: 100%;
+			height: 50%;
+			z-index: 100;
+			background-color: white;
+			opacity: 1;
+		}
+
+		.setting{
+			height: 50px;
+			background-color: #efeff2;
+			margin: 10px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			align-items: baseline;
+			justify-content: space-between;
+			zoom:0.8;
+		}
+		.setting_ani-enter-active{
+			animation: shrink 0.3s;
+		}
+		.setting_ani-leave-active{
+			animation: shrink 0.3s reverse;
+		}
+		@keyframes shrink {
+			0%{
+				height: 0;
+				opacity: 0;
+			}
+			100%{
+				height: 50px;
+				opacity: 1;
+			}
+		}
+
+		.form{
+			touch-action: none;
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			background-color: black;
+			opacity: 1;
+			padding-top: 10%;
+		}
+		.form_ani-enter-active{
+			animation: slide-up 0.3s ease;
+		}
+		.form_ani-leave-active{
+			animation: slide-up 0.3s ease reverse;
+		}
+		@keyframes slide-up {
+			0%{
+				top: 100%;
+			}
+			100%{
+				top: 0;
+			}
+		}
+		.form_wrapper{
+			display: flex;
+			flex-wrap: wrap;
+			padding:10px;
+			color: white;
+		}
+		.h{
+			width: 20%;
+			font-size: 20px;
+			color: var(--color1);
+		}
+		.form input{
+			width:75%;
+			background-color: transparent;
+			border: 0;
+			border-bottom: 1px white solid;
+			color: white;
+			font-size: 28px;
+			border-radius: 0;
+
+		}
+		.form input:focus{
+			outline-style: none;
+			border: 0;
+			border-bottom: 2px solid;
+			caret-color: white;
+		}
+		.picker{
+			width: 75%;
+		}
+		.picker-center-highlight::before, .picker-center-highlight::after{
+			border-color: #4b642c !important;
+		}
+		.picker-item{
+			color: #4b642c;
+		}
+		.picker-selected{
+			color: #92e82a !important;
+		}
+	</style>
+	<!-- icons -->
+	<style>
+		.icon-add{
+			position: relative;
+                width: 50px;
+                height: 20px;
+                background-color: rgb(212, 85, 85);
+                border: 2px solid rgb(212, 85, 85);
+                border-radius: 10px;
+            }
+		.icon-add::before{
+			content: '';
+			width: 16px;
+			height: 2px;
+			background-color: white;
+			position: absolute;
+			top:calc(50% - 1px);
+			left: calc(50% - 8px);
+		}
+		.icon-add::after{
+			content: '';
+			width: 16px;
+			height: 2px;
+			background-color: white;
+			position: absolute;
+			top:calc(50% - 1px);
+			left: calc(50% - 8px);
+			transform: rotate(90deg);
+		}
+
+		.icon-more {
+            box-sizing: border-box;
+            position: relative;
+			margin-left: 0.8em;
+            width: .2em;
+            height: .2em;
+            background-color: gray;
+            border-radius: 50%;
+            left:0em;
+        }
+        .icon-more:before {
+            box-sizing: border-box;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -.36em;
+            width: .2em;
+            height: .2em;
+            background-color: gray;
+            border-radius: 50%;
+        }
+        .icon-more:after {
+            box-sizing: border-box;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: .36em;
+            width: .2em;
+            height: .2em;
+            background-color: gray;
+            border-radius: 50%;
+        }
+		.back-icon{
+
+		}
+	</style>
+</head>
+<body>
+	<div class="ring-body">
+		<div class="wrap">
+			<canvas id="myCanvas" width="400" height="400" style="zoom:0.5"></canvas>
+			<script>
+			  var canvas = document.getElementById('myCanvas')
+
+			  function ring(R1,r1,Target1,color1,canvas1){
+			  var P=Math.PI
+			  var angle=0
+			  this.R=R1
+			  this.r=r1
+			  this.color=color1
+			  this.canvas=canvas1
+			  this.Target=Target1
+			  var R=this.R
+			  var r=this.r
+			  var color=this.color
+			  var Target=this.Target
+			  var canvas=this.canvas
+			  var context = canvas.getContext('2d');
+			  var A=canvas.width/2
+			  var B=canvas.height/2
+			  this.drawRing=function(){
+				  if(angle>=Target){
+					window.clearRequestAnimationFrame(Id)
+				  }
+					  context.clearRect(0,0,800,800)
+					  var angleH=P/180*angle
+					  context.beginPath()
+					  context.lineWidth=r+4
+					  context.strokeStyle='#64071f'
+					  context.moveTo(B,A-R-r/2)
+					  context.arc(B,A,R+r/2,1.5*P,P*3.5)
+					  context.stroke()
+
+					  context.beginPath()
+					  context.lineWidth=r+4
+					  context.strokeStyle='#3a5d11'
+					  context.moveTo(B,A-100-40/2)
+					  context.arc(B,A,100+40/2,1.5*P,P*3.5)
+					  context.stroke()
+
+					  context.beginPath()
+					  context.lineWidth=r+4
+					  context.strokeStyle='#0c5d5f'
+					  context.moveTo(B,A-50-40/2)
+					  context.arc(B,A,50+40/2,1.5*P,P*3.5)
+					  context.stroke()
+
+					  context.fillStyle='#fa114f'
+					  context.strokeStyle='#fa114f'
+					  context.lineWidth=1
+					  context.beginPath()
+					  context.moveTo(B,A-R)
+					  context.arc(B,A-R-r/2,r/2,P*0.5,P*1.5,false)
+					  context.arc(B,A,R+r,P*1.5,P*1.5+angleH,false)
+					  context.arc(B+Math.sin(angleH)*(R+r/2),A-Math.cos(angleH)*(R+r/2),r/2,angleH-P*0.5,P*0.5+angleH,false)
+					  context.arc(B,A,R,P*1.5+angleH,P*1.5,true)
+					  context.stroke()
+					  context.fill()
+
+					  
+					  if(angle<Target/2)angle+=angle/5+0.1
+					  else angle+=(Target-angle)*0.1
+					  var Id=window.requestAnimationFrame(arguments.callee)
+				}
+			  }
+			  function ring2(R1,r1,Target1,color1,canvas1){
+			  var P=Math.PI
+			  var angle=0
+			  this.R=R1
+			  this.r=r1
+			  this.color=color1
+			  this.canvas=canvas1
+			  this.Target=Target1
+			  var R=this.R
+			  var r=this.r
+			  var color=this.color
+			  var Target=this.Target
+			  var canvas=this.canvas
+			  var context = canvas.getContext('2d');
+			  var A=canvas.width/2
+			  var B=canvas.height/2
+			  this.drawRing=function(){
+				  if(angle>=Target){
+					window.clearRequestAnimationFrame(Id)
+				  }
+					  //context.clearRect(0,0,800,800)
+					  //context.clearRect(0,0,800,800)
+					//   var angleH=P/180*angle
+					//   context.beginPath()
+					//   context.lineWidth=r +4
+					//   context.strokeStyle='#3a5d11'
+					//   context.moveTo(B,A-R-r/2)
+					//   context.arc(B,A,R+r/2,1.5*P,P*3.5)
+					//   context.stroke()
+
+					  var angleH=P/180*angle
+					  context.fillStyle='#92e82a'
+					  context.strokeStyle='#92e82a'
+					  context.beginPath()
+					  context.moveTo(B,A-R)
+					  context.arc(B,A-R-r/2,r/2,P*0.5,P*1.5,false)
+					  context.arc(B,A,R+r,P*1.5,P*1.5+angleH,false)
+					  context.arc(B+Math.sin(angleH)*(R+r/2),A-Math.cos(angleH)*(R+r/2),r/2,angleH-P*0.5,P*0.5+angleH,false)
+					  context.arc(B,A,R,P*1.5+angleH,P*1.5,true)
+					  context.stroke()
+					  context.fill()
+					  if(angle<Target/2)angle+=angle/5+0.1
+					  else angle+=(Target-angle)*0.1
+					  var Id=window.requestAnimationFrame(arguments.callee)
+				}
+			  }
+			  function ring3(R3,r3,Target3,color3,canvas3){
+			  var P=Math.PI
+			  var angle=0
+			  this.R=R3
+			  this.r=r3
+			  this.color=color3
+			  this.canvas=canvas3
+			  this.Target=Target3
+			  var R=this.R
+			  var r=this.r
+			  var color=this.color
+			  var Target=this.Target
+			  var canvas=this.canvas
+			  var context = canvas.getContext('2d');
+			  var A=canvas.width/2
+			  var B=canvas.height/2
+			  this.drawRing=function(){
+				  if(angle>=Target){
+					window.clearRequestAnimationFrame(Id)
+				  }
+					  //context.clearRect(0,0,800,800)
+					  //context.clearRect(0,0,800,800)
+					//   var angleH=P/180*angle
+					//   context.beginPath()
+					//   context.lineWidth=r+4
+					//   context.strokeStyle='#0c5d5f'
+					//   context.moveTo(B,A-R-r/2)
+					//   context.arc(B,A,R+r/2,1.5*P,P*3.5)
+					//   context.stroke()
+
+					  var angleH=P/180*angle
+					  context.fillStyle='#1eeaef'
+					  context.strokeStyle='#1eeaef'
+					  context.beginPath()
+					  context.moveTo(B,A-R)
+					  context.arc(B,A-R-r/2,r/2,P*0.5,P*1.5,false)
+					  context.arc(B,A,R+r,P*1.5,P*1.5+angleH,false)
+					  context.arc(B+Math.sin(angleH)*(R+r/2),A-Math.cos(angleH)*(R+r/2),r/2,angleH-P*0.5,P*0.5+angleH,false)
+					  context.arc(B,A,R,P*1.5+angleH,P*1.5,true)
+					  context.stroke()
+					  context.fill()
+					  if(angle<Target/2)angle+=angle/5+0.1
+					  else angle+=(Target-angle)*0.1
+					  var Id=window.requestAnimationFrame(arguments.callee)
+				}
+			  }
+			  
+			  var ring=new ring(150,40,DayAngle,'#fa114f',canvas)
+			  var ring2=new ring2(100,40,WeekAngle,'#92e82a',canvas)
+			  var ring3=new ring3(50,40,MonthAngle,'#1eeaef',canvas)
+			  ring.drawRing()
+			  ring2.drawRing()
+			  ring3.drawRing()
+			 
+			</script>
+		</div>
+
+		<div class="fix1"></div>
+		<p class="days">时间在流逝：</p>
+		<p class="days" id="p1"><span>今年还有</span><strong style="color: var(--pcolor);font-size: 2.25em;">365</strong>天</p>
+		<p class="days" id="p2"><span>本周剩余</span><strong style="color: var(--color2);font-size: 2.25em;">4</strong>/7天</p>
+		<p class="days" id="p3"><span>本月剩余</span><strong style="color: var(--color3);font-size: 2.25em;">10</strong><span>/30</span>天</p>
+		<p class="days" id="p4"><span>今日还剩下</span><strong  id="sec" style="color: var(--color1); font-size:2.5em;">86400</strong>秒</p>
+
+		<div class="prograss-bar">
+			<div class="pouter"></div>
+			<div class="pinner"></div>
+		</div>
+	</div>
+	
+	
+	<div class="fix"></div>
+	
+	
+	<div class="content" id="all-content">
+        <p class="title" id='title2'>我的日子</p>
+		<div class="ul" id="my_list">
+            <mt-cell-swipe v-for="(item, index) in my_days" v-bind:key="index" :style="{backgroundColor:item.color}"
+            @click.native="tap(item)"
+            :right="[
+            {
+                content: btn_name,
+                handler: () => del(item.name)
+            }
+            ]">
+            <div class="li-left">{{item.front}}<strong>{{item.name}}</strong>{{item.middle}}</div>
+            <div class="li-right"><strong>{{item.days}}</strong>{{item.after}}</div>
+            </mt-cell-swipe>    
         </div>
-    </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
 
-{% endfor %}
+		<transition name="setting_ani">
+			<div class="setting" v-if="ss">
+				<mt-switch v-model="theme_value">使用渐变色主题</mt-switch>
+				<a href="">导入日程</a>
+			</div>
+		</transition>
+        
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+		<div class="footers">
+			<mt-button @click.native="setting">
+				<div class="icon-more"></div>
+			</mt-button>
+			<mt-button @click.native="add">
+				<div class="icon-add"></div>
+			</mt-button>
+		</div>
+          <div class="footer">Copyright  2020 无良的北极 Rights Reserved.</div>
+	</div>  
+	<div id="panel">
+		<transition name="panel_gray_ani">
+			<div id="panel_gray" v-show="ps" v-on:click="fades"></div>
+		</transition>
+		<transition name="panel_body_ani">
+			<div id="panel_body" v-show="ps"></div>
+		</transition>
+	</div>
+
+	<div id="form">
+		<transition name="form_ani">
+			<div v-if="fs" class="form">
+
+				<div class="form_wrapper">
+					<div class="h" style="color:white">名称：</div><input style="border-color:#833b4e" type="text" id='day_name' autofocus>
+				</div>
+				
+				<div class="form_wrapper">
+					<div class="h" style="color: white;padding-top: 76px;">日期：</div><mt-picker :slots="slots" @change="onValuesChange" id='day_date'></mt-picker>
+				</div>
+				<div class="form_wrapper">
+					<div class="h" style="color:white;">备注：</div><input style="border-color:#415b5c" type="text" id='day_msg'>
+				</div>
+				<div class="form_wrapper">
+					<div>作为节日</div><input type="checkbox" id='day_fes'>
+				</div>
+				<mt-button size="small" type="primary" icon="back" @click.native="cancel"></mt-button>
+				<mt-button size="small" type="primary" icon="more" @click.native="submit"></mt-button>
+
+			</div>
+		</transition>
+	</div>
+	
+	<div id="fix2"></div>
+</body>
+<script>
+var DAYS=[]
+var my_days=[]
+function getDays(){
+	DAYS=JSON.parse(localStorage.DAYS?localStorage.DAYS:'[]')
+	my_days=initDays(DAYS)
+	if(my_list)my_list.my_days=my_days
+	if(my_days.length==0)document.getElementById('title2').innerHTML='没有日子'
+	else document.getElementById('title2').innerHTML='我的日子'
+}
+getDays()
+
+
+    var my_list=new Vue({
+        el: '#all-content',
+        data:{
+            my_days:my_days,
+            btn_name:"删除",
+			ds:false,
+			ss:false,
+			theme_value:true
+        },
+        methods:{
+            del:function(e){
+                console.log(e)
+                dialog_show=true
+                this.$messagebox({
+                    title: '确认删除'+e+'吗？',
+                    showCancelButton: true,
+                    confirmButtonText:"确认",
+                    cancelButtonText:"取消"}).then(action=>{
+                        if(action=='confirm'){
+							console.log('delete')
+							let ddays=JSON.parse(localStorage.DAYS)
+							let ndays=[]
+							for(let i=0;i<ddays.length;i++){
+								if(ddays[i].name!=e)ndays.push(ddays[i])
+							}
+							window.localStorage.setItem('DAYS',JSON.stringify(ndays))
+							getDays()
+                        }
+                    })
+            },
+            tap:function(e){
+                console.log(e)
+                if(panel)panel.ps=true
+			},
+			add:function(){
+				console.log('add')
+				form.fs=true
+			},
+			setting:function(){
+				this.ss=!this.ss
+			},
+			back:function(){
+				this.ds=false
+			}
+        }
+		})
+	var panel=new Vue({
+		el:"#panel",
+		data:{
+			ps:false
+		},
+		methods:{
+			fades:function(){
+				this.ps=false
+			}
+		}
+	})
+	var y_value=[]
+	var yyy=100
+	var xxx=1970
+	while(yyy--){
+		y_value.push(xxx)
+		xxx++
+	}
+	let ny=new Date().getFullYear()
+	let nm=new Date().getMonth()
+	let nd=new Date().getDate()
+	var m_value=['01', '02', '03', '04', '05', '06','07','08','09','10','11','12']
+
+	var slot=[{
+          flex: 1,
+          values: y_value,
+          className: 'slot1',
+		  textAlign: 'left',
+		  defaultIndex:ny-1970,
+        },{
+          divider: true,
+          content: '-',
+          className: 'slot0'
+        }, {
+          flex: 1,
+          values: m_value,
+		  className: 'slot2',
+		  defaultIndex:nm,
+        },{
+          divider: true,
+          content: '-',
+          className: 'slot0'
+        }, {
+          flex: 1,
+          values: [],
+          className: 'slot3',
+          textAlign: 'right'
+        }]
+	var form=new Vue({
+		el:"#form",
+		data:{
+			fs:false,
+			name:"",
+			date:"",
+			msg:"",
+			slots:slot,
+			date:'',
+		},
+		methods:{
+			cancel:function(){
+				this.fs=false
+			},
+			onValuesChange:function(e){
+				
+				let d=new Date(e.getValues()[0],e.getValues()[1],0)
+				let dd=d.getDate()
+				let ddd=1
+				var d_value=[]
+				while(dd--){
+					if(ddd<10)d_value.push(('0'+ddd.toString()))
+					else d_value.push(ddd.toString())
+					ddd++
+				}
+				this.slots.pop()
+				let slot4={
+					flex: 1,
+					values: d_value,
+					className: 'slot3',
+					textAlign: 'right',
+					defaultIndex:nd-1,
+					}
+				this.slots.push(slot4)
+				let cy=e.getSlotValue(0)?e.getSlotValue(0):y_value[ny-1970]
+				let cm=e.getSlotValue(1)?e.getSlotValue(1):m_value[nm]
+				let cd=e.getSlotValue(2)?e.getSlotValue(2):d_value[nd-1]
+				this.date=cy+'-'+cm+'-'+cd
+				console.log(cy+'-'+cm+'-'+cd)
+			},
+			submit:function(){
+				var day_name=document.getElementById('day_name').value
+				if(day_name){
+					var day_date=this.date
+					var day_msg=document.getElementById('day_msg').value?document.getElementById('day_msg').value:''
+					var day_fes=document.getElementById('day_fes').checked?document.getElementById('day_fes').checked:false
+					var day={
+						name:day_name,
+						date:day_date,
+						msg:day_msg,
+						isfes:day_fes
+					}
+					console.log(day)
+					let re=this.setDay(day)
+					if(re==1){
+						this.cancel()
+					}else{
+						console.log('failed')
+					}
+					
+					
+				}
+				else this.$messagebox({
+                    title: '请填写日子名称',
+                    showCancelButton: false,
+                    confirmButtonText:"确认"})
+				
+			},
+			setDay:function(obj){
+				let days=localStorage.DAYS?localStorage.DAYS.toString():'[]'
+				console.log(days)
+				days=JSON.parse(days)
+				for(let i=0;i<days.length;i++){
+						if(days[i].name==obj.name){
+							console.log('error:already exsit')
+							return 0
+					}
+				}
+				days.push(obj)
+				localStorage.DAYS=JSON.stringify(days)
+				console.log(localStorage)
+				console.log('success')
+				getDays()
+				return 1
+			}
+		}
+	})
+	
+
+function initDays(arr){
+	let days=[]
+	for(let i=0;i<arr.length;i++){
+		let day=arr[i]
+		console.log(day.date)
+		let dd=new Date(day.date)
+		console.log(dd)
+		let now=new Date()
+		let date=Math.floor(((now.getTime()-dd.getTime()))/(24*3600*1000))
+		console.log(date)
+		if(date==0){
+			var front='今天是'
+			var middle=''
+			date=''
+			var after=''
+		}
+		else{
+			var front='距离'
+			var after='天'
+			if(date<0){
+				var middle='还有'
+			}else{
+				var middle='已经过了'
+			}
+		}
+		let tmp={
+			msg:day.msg,
+			after: after,
+			color: getColor(date),
+			days: Math.abs(date),
+			front: front,
+			left: 0,
+			middle: middle,
+			name: day.name,
+		}
+		days.push(tmp)
+	}
+	console.log(days)
+	return days
+}
+	
+
+function getColor(num){
+	var level=[0,10,30,60,100,365,500,1000];
+	var colors=["#00838F","#00695C","#2E7D32","#558B2F","#9E9D24","#F9A825","#FF8F00","#EF6C00"];
+	var mystyle='backgroundColor'
+	var i=0;
+	var l=colors.length-1;
+	for(i=0;i<level.length;i++){
+		if(num>=level[i] && num<level[i+1]){l=i;break;}
+	}
+	if(mystyle=='backgroundColor'){return colors[l];}
+	else {return colors[l];}
+}
+
+</script>
+
+<script type="text/javascript">
+	window.onscroll=function(){
+		var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+		  var h=document.body.offsetHeight
+		  var fix2=document.getElementById("fix2")
+		  var H=document.documentElement.clientHeight
+
+		  if(scrollTop>=h-H-100){
+			  fix2.style.backgroundColor="#efeff2"
+			  fix2.style.height=(200+h-H)+"px"
+			}
+		  else {
+				fix2.style.backgroundColor="black"
+			  fix2.style.height='30%'
+		  }
+	}
+	var frontmsg1=["今年还有","本周剩余","本月剩余","今日还剩下"];
+	var frontmsg2=["今年已过","本周已过","本月已过","今日已过了"];
+	var timeflag;
+	showleft();
+	var boool=true;
+	document.getElementsByClassName("fix")[0].onclick=function(){
+		boool=!boool;
+		clearInterval(timeflag)
+		if(boool){
+			showleft();
+		}else{
+			showpass();
+		}
+	}
+	
+	var dayleft1=dayleft;
+	var daypass1=daypass;
+	setInterval(function(){
+		var seconds=document.getElementById("sec");
+		dayleft1=dayleft1-1;
+		daypass1=daypass1+1
+		if(boool){seconds.innerHTML=parseInt(dayleft1);}
+		else {seconds.innerHTML=parseInt(daypass1);}
+	},'1000')
+
+
+	function showpass(){
+		document.getElementById("p1").getElementsByTagName("strong")[0].innerHTML=parseInt(ydays-yleft);
+		document.getElementById("p1").getElementsByTagName("span")[0].innerHTML=frontmsg2[0];
+		
+		document.getElementById("p2").getElementsByTagName("strong")[0].innerHTML=weekpass;
+		document.getElementById("p2").getElementsByTagName("span")[0].innerHTML=frontmsg2[1];
+
+		document.getElementById("p3").getElementsByTagName("strong")[0].innerHTML=parseInt(mdays-mleft);
+		document.getElementById("p3").getElementsByTagName("span")[0].innerHTML=frontmsg2[2];
+		document.getElementById("p3").getElementsByTagName("span")[1].innerHTML="/"+mdays;
+		
+		document.getElementById("p4").getElementsByTagName("span")[0].innerHTML=frontmsg2[3];
+		document.getElementById("p4").getElementsByTagName("strong")[0].innerHTML=parseInt(daypass);
+	}
+
+	function showleft(){
+		document.getElementById("p1").getElementsByTagName("strong")[0].innerHTML=yleft;
+		document.getElementById("p1").getElementsByTagName("span")[0].innerHTML=frontmsg1[0];
+		
+		document.getElementById("p2").getElementsByTagName("strong")[0].innerHTML=weekleft;
+		document.getElementById("p2").getElementsByTagName("span")[0].innerHTML=frontmsg1[1];
+
+		document.getElementById("p3").getElementsByTagName("strong")[0].innerHTML=mleft;
+		document.getElementById("p3").getElementsByTagName("span")[0].innerHTML=frontmsg1[2];
+		document.getElementById("p3").getElementsByTagName("span")[1].innerHTML="/"+mdays;
+		
+		document.getElementById("p4").getElementsByTagName("span")[0].innerHTML=frontmsg1[3];
+		document.getElementById("p4").getElementsByTagName("strong")[0].innerHTML=dayleft;
+	}
+</script>
+</html>
