@@ -346,16 +346,28 @@ if(weekpass==0)weekpass=7
 	}
 	.li-left{
 		color: white;
+		display: flex;
+		flex-flow: row nowrap;
+		
 	}
 	.li-right{
 		color: white;
+		max-width: 100px;
+		
 	}
-	.li-left strong{
+	.li-left .strong{
 		color: white;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 40%;
+		font-weight: bolder;
+		
 	}
 	.li-right strong{
 		font-size: 40px;
 		color: white;
+		
 	}
 	.mint-button,.mint-button--default,.mint-button--normal{
 		background-color: transparent;
@@ -462,6 +474,39 @@ if(weekpass==0)weekpass=7
 			z-index: 100;
 			background-color: white;
 			opacity: 1;
+			color: white;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-between;
+			
+		}
+		#panel_body .name{
+			padding-top: 10px;
+			padding-left: 10px;
+			font-size:32px;
+			font-weight: bolder;
+			display: flex;
+			flex-flow: row nowrap;
+		}
+		#panel_body .name .fes {
+			white-space: nowrap;
+			height: fit-content;
+			font-size:small;
+			font-weight: normal;
+			padding-left: 2px;
+			padding-right: 2px;
+			border: #fff 1px solid;
+			border-radius: 5px;
+		}
+		#panel_body .msg{
+			padding-left: 10px;
+			font-size: 16px;
+			flex-grow: 1;
+		}
+		#panel_body .date{
+			padding: 10px;
+			color: #e6e6e6;
+			align-self: flex-end;
 		}
 
 		.setting{
@@ -814,7 +859,7 @@ if(weekpass==0)weekpass=7
 	<div class="content" id="all-content">
         <p class="title" id='title2'>我的日子</p>
 		<div class="ul" id="my_list">
-            <mt-cell-swipe v-for="(item, index) in my_days" v-bind:key="index" :style="{backgroundColor:item.color}"
+            <mt-cell-swipe v-for="(item, index) in my_days" v-bind:key="index" :style="{background:item.color}"
             @click.native="tap(item)"
             :right="[
             {
@@ -822,14 +867,14 @@ if(weekpass==0)weekpass=7
                 handler: () => del(item.name)
             }
             ]">
-            <div class="li-left">{{item.front}}<strong>{{item.name}}</strong>{{item.middle}}</div>
+            <div class="li-left">{{item.front}}<div class="strong">{{item.name}}</div>{{item.middle}}</div>
             <div class="li-right"><strong>{{item.days}}</strong>{{item.after}}</div>
             </mt-cell-swipe>    
         </div>
 
 		<transition name="setting_ani">
 			<div class="setting" v-if="ss">
-				<mt-switch v-model="theme_value">使用渐变色主题</mt-switch>
+				<mt-switch v-model="theme_value" @change='changeThemeValue'>使用渐变色主题</mt-switch>
 				<a href="">导入日程</a>
 			</div>
 		</transition>
@@ -850,7 +895,11 @@ if(weekpass==0)weekpass=7
 			<div id="panel_gray" v-show="ps" v-on:click="fades"></div>
 		</transition>
 		<transition name="panel_body_ani">
-			<div id="panel_body" v-show="ps"></div>
+			<div id="panel_body" v-show="ps"  v-bind="day" :style="{background:day.color}">
+					<div class="name">{{day.name}}<div class="fes" v-if='day.isfes'>节日</div></div>
+					<div class="msg">{{day.msg?('备注：'+day.msg):''}}</div>
+					<div class="date">日期：{{day.date}}</div>
+			</div>
 		</transition>
 	</div>
 
@@ -900,9 +949,14 @@ getDays()
             btn_name:"删除",
 			ds:false,
 			ss:false,
-			theme_value:true
+			theme_value:localStorage.usegcolor?(localStorage.usegcolor=='true'?true:false):false
         },
         methods:{
+			changeThemeValue:function(){
+				if(this.theme_value)localStorage.usegcolor='true'
+				else localStorage.usegcolor='false'
+				getDays()
+			},
             del:function(e){
                 console.log(e)
                 dialog_show=true
@@ -925,7 +979,10 @@ getDays()
             },
             tap:function(e){
                 console.log(e)
-                if(panel)panel.ps=true
+                if(panel){
+					panel.ps=true
+					panel.day=e
+					}
 			},
 			add:function(){
 				console.log('add')
@@ -942,7 +999,8 @@ getDays()
 	var panel=new Vue({
 		el:"#panel",
 		data:{
-			ps:false
+			ps:false,
+			day:''
 		},
 		methods:{
 			fades:function(){
@@ -1082,14 +1140,12 @@ function initDays(arr){
 		let day=arr[i]
 		console.log(day.date)
 		let dd=new Date(day.date)
-		console.log(dd)
 		let now=new Date()
 		let date=Math.floor(((now.getTime()-dd.getTime()))/(24*3600*1000))
-		console.log(date)
 		if(date==0){
 			var front='今天是'
 			var middle=''
-			date=''
+			var ddays=''
 			var after=''
 		}
 		else{
@@ -1100,16 +1156,19 @@ function initDays(arr){
 			}else{
 				var middle='已经过了'
 			}
+			var ddays=Math.abs(date)
 		}
 		let tmp={
 			msg:day.msg,
 			after: after,
 			color: getColor(date),
-			days: Math.abs(date),
+			days: ddays,
 			front: front,
 			left: 0,
 			middle: middle,
 			name: day.name,
+			date:day.date,
+			isfes:day.isfes
 		}
 		days.push(tmp)
 	}
@@ -1120,7 +1179,12 @@ function initDays(arr){
 
 function getColor(num){
 	var level=[0,10,30,60,100,365,500,1000];
-	var colors=["#00838F","#00695C","#2E7D32","#558B2F","#9E9D24","#F9A825","#FF8F00","#EF6C00"];
+	var pcolors=["#00838F","#00695C","#2E7D32","#558B2F","#9E9D24","#F9A825","#FF8F00","#EF6C00"];
+	var gcolors=["linear-gradient(160deg, #00ffd5 20%,#008cff 80%)","linear-gradient(160deg, #b100ff 20%,#00b3ff 80%)","linear-gradient(160deg, #0078ff 20%,#002abb 80%)","linear-gradient(160deg, #ffce00 20%,#ff8b00 80%)","linear-gradient(160deg, #ff0064 20%,#ca00ff 80%)","linear-gradient(160deg, #a200ff 20%,#cf3700 80%)"]
+	var usegcolor=localStorage.usegcolor?(localStorage.usegcolor=='true'?true:false):false
+	console.log(usegcolor)
+	if(usegcolor)var colors=gcolors
+	else var colors=pcolors
 	var mystyle='backgroundColor'
 	var i=0;
 	var l=colors.length-1;
