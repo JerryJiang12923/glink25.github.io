@@ -360,7 +360,7 @@ if(weekpass==0)weekpass=7
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		max-width: 40%;
+		max-width: 55vw;
 		font-weight: bolder;
 		
 	}
@@ -519,6 +519,9 @@ if(weekpass==0)weekpass=7
 			align-items: baseline;
 			justify-content: space-between;
 			zoom:0.8;
+			padding: 0;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 		.setting_ani-enter-active{
 			animation: shrink 0.3s;
@@ -599,6 +602,31 @@ if(weekpass==0)weekpass=7
 		}
 		.picker-selected{
 			color: #92e82a !important;
+		}
+		input[type=checkbox]{
+			width: 20px;
+			height: 20px;
+			visibility: hidden;
+			font-size: 16px;
+		}
+		#day_fes+label{
+			position: absolute;
+			content: '';
+			width: 20px;
+			height: 20px;
+			border: white 0 solid;
+			border-radius: 100%;
+			background-color: white;
+
+		}
+		#day_fes:checked+label::before{
+			position: absolute;
+			content: '';
+			width: 20px;
+			height: 20px;
+			border: white 1px solid;
+			border-radius: 100%;
+			background-color:#1eeaef;
 		}
 	</style>
 	<!-- icons -->
@@ -918,10 +946,15 @@ if(weekpass==0)weekpass=7
 					<div class="h" style="color:white;">备注：</div><input style="border-color:#415b5c" type="text" id='day_msg'>
 				</div>
 				<div class="form_wrapper">
-					<div>作为节日</div><input type="checkbox" id='day_fes'>
+					<div  style="width: 100%;">作为节日:<input type="checkbox" id='day_fes'><label for="day_fes"></label></div>
 				</div>
-				<mt-button size="small" type="primary" icon="back" @click.native="cancel"></mt-button>
-				<mt-button size="small" type="primary" icon="more" @click.native="submit"></mt-button>
+
+				<div class="form_wrapper" style="justify-content: space-between;zoom:1.2;">
+					<mt-button size="small" type="primary" icon="back" @click.native="cancel"></mt-button>
+				<mt-button size="small" type="primary" @click.native="submit">
+					<div class="icon-add" style="background: none;border: none;"></div>
+				</mt-button>
+				</div>
 
 			</div>
 		</transition>
@@ -1139,9 +1172,20 @@ function initDays(arr){
 	for(let i=0;i<arr.length;i++){
 		let day=arr[i]
 		console.log(day.date)
-		let dd=new Date(day.date)
 		let now=new Date()
+		if(day.isfes){
+			var dd=new Date(day.date)
+			if(Math.floor(((now.getTime()-dd.getTime()))/(24*3600*1000))<0){
+
+			}//没到
+			else{
+				dd.setFullYear(dd.getFullYear()+1)
+			}
+		}
+		else var dd=new Date(day.date)
+		
 		let date=Math.floor(((now.getTime()-dd.getTime()))/(24*3600*1000))
+		
 		if(date==0){
 			var front='今天是'
 			var middle=''
@@ -1149,7 +1193,8 @@ function initDays(arr){
 			var after=''
 		}
 		else{
-			var front='距离'
+			if(day.isfes)var front='距离下一个'
+			else var front='距离'
 			var after='天'
 			if(date<0){
 				var middle='还有'
