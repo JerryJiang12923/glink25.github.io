@@ -1227,6 +1227,7 @@ getDays()
 				let cm=e.getSlotValue(1)?e.getSlotValue(1):m_value[nm]
 				let cd=e.getSlotValue(2)?e.getSlotValue(2):d_value[nd-1]
 				this.date=cy+'/'+cm+'/'+cd
+				console.log(this.date)
 			},
 			submit:function(){
 				var day_name=document.getElementById('day_name').value
@@ -1282,12 +1283,13 @@ function initDays(arr){
 		console.log(day.date)
 		let now=new Date()
 		if(day.isfes){
-			var dd=new Date(day.date)
+			var dd=new Date(new Date().getFullYear()+'/'+(new Date(day.date).getMonth()+1)+'/'+new Date(day.date).getDate())
 			if(Math.floor(((now.getTime()-dd.getTime()))/(24*3600*1000))<0){
-
+				day.date=new Date().getFullYear()+'/'+(new Date(day.date).getMonth()+1)+'/'+new Date(day.date).getDate()
 			}//没到
 			else{
 				dd.setFullYear(dd.getFullYear()+1)
+				day.date=(new Date().getFullYear()+1)+'/'+(new Date(day.date).getMonth()+1)+'/'+new Date(day.date).getDate()
 			}
 		}
 		else var dd=new Date(day.date)
