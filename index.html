@@ -11,7 +11,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="./img/icon.png" />
    <link rel="apple-touch-startup-image" href="./img/splash-640x920.png">
       
-	<script src="./js/vue.js"></script>
+	<script src="./js/vue.min.js"></script>
 	<!-- 引入样式 -->
     <link rel="stylesheet" href="./css/style.css">
     <!-- 引入组件库 -->
@@ -352,7 +352,7 @@ if(weekpass==0)weekpass=7
 	}
 	.li-right{
 		color: white;
-		max-width: 100px;
+		max-width: 150px;
 		
 	}
 	.li-left .strong{
@@ -523,6 +523,10 @@ if(weekpass==0)weekpass=7
 			margin-top: 0;
 			margin-bottom: 0;
 		}
+		.setting .mya{
+			color: blue;
+			text-decoration: underline;
+		}
 		.setting_ani-enter-active{
 			animation: shrink 0.3s;
 		}
@@ -691,9 +695,6 @@ if(weekpass==0)weekpass=7
             background-color: gray;
             border-radius: 50%;
         }
-		.back-icon{
-
-		}
 	</style>
 </head>
 <body>
@@ -801,10 +802,12 @@ if(weekpass==0)weekpass=7
 					  context.moveTo(B,A-R)
 					  context.arc(B,A-R-r/2,r/2,P*0.5,P*1.5,false)
 					  context.arc(B,A,R+r,P*1.5,P*1.5+angleH,false)
+
 					  context.arc(B+Math.sin(angleH)*(R+r/2),A-Math.cos(angleH)*(R+r/2),r/2,angleH-P*0.5,P*0.5+angleH,false)
 					  context.arc(B,A,R,P*1.5+angleH,P*1.5,true)
 					  context.stroke()
 					  context.fill()
+					  
 					  if(angle<Target/2)angle+=angle/5+0.1
 					  else angle+=(Target-angle)*0.1
 					  var Id=window.requestAnimationFrame(arguments.callee)
@@ -903,7 +906,7 @@ if(weekpass==0)weekpass=7
 		<transition name="setting_ani">
 			<div class="setting" v-if="ss">
 				<mt-switch v-model="theme_value" @change='changeThemeValue'>使用渐变色主题</mt-switch>
-				<a href="">导入日程</a>
+				<div class="mya" @click='dimport'>导入日程</div>
 			</div>
 		</transition>
         
@@ -932,7 +935,7 @@ if(weekpass==0)weekpass=7
 	</div>
 
 	<div id="form">
-		<transition name="form_ani">
+		<transition name="form_ani" v-on:after-enter='afterEnter' v-on:before-leave='beforeLeave'>
 			<div v-if="fs" class="form">
 
 				<div class="form_wrapper">
@@ -969,7 +972,7 @@ function getDays(){
 	DAYS=JSON.parse(localStorage.DAYS?localStorage.DAYS:'[]')
 	my_days=initDays(DAYS)
 	if(my_list)my_list.my_days=my_days
-	if(my_days.length==0)document.getElementById('title2').innerHTML='没有日子'
+	if(my_days.length==0)document.getElementById('title2').innerHTML='还没有日子，快去添加吧'
 	else document.getElementById('title2').innerHTML='我的日子'
 }
 getDays()
@@ -984,7 +987,88 @@ getDays()
 			ss:false,
 			theme_value:localStorage.usegcolor?(localStorage.usegcolor=='true'?true:false):false
         },
+		created:function(){
+				//检查ios是否全屏启动
+				if(navigator.userAgent.indexOf('iPhone')!=-1 || navigator.userAgent.indexOf('Mac OS')!=-1){
+						if(!window.navigator.standalone){
+						this.$messagebox('此页面为PWA站点，将其安装到主屏幕来获得最佳体验')
+						}
+					}
+				//chrome支持添加到桌面
+				else{
+						window.addEventListener('beforeinstallprompt', event => {
+							event.userChoice.then(result => {console.log(result.outcome)
+							})
+						})
+					}
+			},
         methods:{
+			dimport:function(){
+				var that=this
+				this.$messagebox({
+                    title: '请选择iCloud/Shortcuts/mydays/days.txt文件\n注意：重复名称的日子不会被添加',
+                    showCancelButton: true,
+                    confirmButtonText:"选择文件",
+                    cancelButtonText:"取消"}).then(action=>{
+                        if(action=='confirm'){
+							console.log('choose')
+							var inputObj=document.createElement('input')
+							inputObj.setAttribute('id','_ef');
+							inputObj.setAttribute('type','file');
+							inputObj.setAttribute("style",'visibility:hidden');
+							document.body.appendChild(inputObj);
+							inputObj.addEventListener('change',function(){
+								if(!inputObj.value){
+									that.$messagebox('没有选择文件')
+									return
+								}
+								let file=inputObj.files[0]
+								if(file.name!='days.txt'){
+									that.$messagebox('文件格式不正确')
+									return
+								}
+								let reader=new FileReader()
+								reader.onload=function(e){
+									let content=e.target.result
+									let csplit=content.split('\n')
+									console.log(csplit)
+									let old_days=localStorage.DAYS?JSON.parse(localStorage.DAYS):[]
+									let count=0
+									for(let i=0;i<csplit.length;i++){
+										let day=csplit[i].split('/')
+										let day_name=day[0]
+										let day_date=day[1].replace('年','/').replace('月','/').replace('日','')
+										day_date=new Date(day_date)
+										if(day_date==undefined)break
+										day_date=day_date.getFullYear()+'/'+(day_date.getMonth()+1)+'/'+day_date.getDate()
+										console.log(day_name,day_date)
+										for(let j=0;j<old_days.length;j++){
+											if(old_days[j].name!=day_name){
+												if(j==old_days.length-1){
+														old_days.push({
+															name:day_name,
+															date:day_date
+														})
+														count++
+												}
+											}else break
+										}
+									}
+									localStorage.setItem('DAYS',JSON.stringify(old_days))
+									getDays()
+									that.$messagebox(count+'个日子添加成功！')
+								}
+								reader.readAsText(file)
+								
+								
+							})
+							inputObj.click();
+							
+                        }else{
+							console.log('cancel')
+							}
+					})
+			},
 			changeThemeValue:function(){
 				if(this.theme_value)localStorage.usegcolor='true'
 				else localStorage.usegcolor='false'
@@ -1089,6 +1173,14 @@ getDays()
 			date:'',
 		},
 		methods:{
+			afterEnter:function(e){
+				document.getElementById('all-content').style.opacity=0
+				console.log('entered')
+			},
+			beforeLeave:function(e){
+				document.getElementById('all-content').style.opacity=1
+				console.log('toleave')
+			},
 			cancel:function(){
 				this.fs=false
 			},
@@ -1115,8 +1207,7 @@ getDays()
 				let cy=e.getSlotValue(0)?e.getSlotValue(0):y_value[ny-1970]
 				let cm=e.getSlotValue(1)?e.getSlotValue(1):m_value[nm]
 				let cd=e.getSlotValue(2)?e.getSlotValue(2):d_value[nd-1]
-				this.date=cy+'-'+cm+'-'+cd
-				console.log(cy+'-'+cm+'-'+cd)
+				this.date=cy+'/'+cm+'/'+cd
 			},
 			submit:function(){
 				var day_name=document.getElementById('day_name').value
@@ -1148,7 +1239,6 @@ getDays()
 			},
 			setDay:function(obj){
 				let days=localStorage.DAYS?localStorage.DAYS.toString():'[]'
-				console.log(days)
 				days=JSON.parse(days)
 				for(let i=0;i<days.length;i++){
 						if(days[i].name==obj.name){
@@ -1158,7 +1248,6 @@ getDays()
 				}
 				days.push(obj)
 				localStorage.DAYS=JSON.stringify(days)
-				console.log(localStorage)
 				console.log('success')
 				getDays()
 				return 1
@@ -1225,7 +1314,10 @@ function initDays(arr){
 function getColor(num){
 	var level=[0,10,30,60,100,365,500,1000];
 	var pcolors=["#00838F","#00695C","#2E7D32","#558B2F","#9E9D24","#F9A825","#FF8F00","#EF6C00"];
-	var gcolors=["linear-gradient(160deg, #00ffd5 20%,#008cff 80%)","linear-gradient(160deg, #b100ff 20%,#00b3ff 80%)","linear-gradient(160deg, #0078ff 20%,#002abb 80%)","linear-gradient(160deg, #ffce00 20%,#ff8b00 80%)","linear-gradient(160deg, #ff0064 20%,#ca00ff 80%)","linear-gradient(160deg, #a200ff 20%,#cf3700 80%)"]
+	var gcolors=["linear-gradient(160deg, #00ffd5 20%,#008cff 80%)","linear-gradient(160deg, #b100ff 20%,#00b3ff 80%)",
+	"linear-gradient(160deg, #0078ff 20%,#002abb 80%)","linear-gradient(160deg, #ffce00 20%,#ff8b00 80%)",
+	"linear-gradient(160deg, #0078ff 20%,#002abb 80%)","linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
+	"linear-gradient(160deg, #a200ff 20%,#cf3700 80%)","linear-gradient(160deg, #a200ff 20%,#cf3700 80%)"]
 	var usegcolor=localStorage.usegcolor?(localStorage.usegcolor=='true'?true:false):false
 	console.log(usegcolor)
 	if(usegcolor)var colors=gcolors
@@ -1251,12 +1343,10 @@ function getColor(num){
 		  var H=document.documentElement.clientHeight
 
 		  if(scrollTop>=h-H-100){
-			  fix2.style.backgroundColor="#efeff2"
-			  fix2.style.height=(200+h-H)+"px"
+				fix2.style.backgroundColor='#efeff2'
 			}
 		  else {
 				fix2.style.backgroundColor="black"
-			  fix2.style.height='30%'
 		  }
 	}
 	var frontmsg1=["今年还有","本周剩余","本月剩余","今日还剩下"];
