@@ -8,6 +8,9 @@
 	<meta content="black-translucent"name="apple-mobile-web-app-status-bar-style">
 	<meta name="apple-mobile-web-app-capable"content="yes">
 	<meta name="viewport"content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#000">
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="./img/icon.png" />
    <link rel="apple-touch-startup-image" href="./img/splash-640x920.png">
       
@@ -71,6 +74,7 @@ if(weekpass==0)weekpass=7
     margin: 0; padding: 0;
     font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
     }
+	.element::-webkit-scrollbar { width: 0 !important }
 	a {
 	-webkit-tap-highlight-color: transparent !important;
 	-webkit-touch-callout: none !important;
@@ -1037,7 +1041,13 @@ getDays()
 									for(let i=0;i<csplit.length;i++){
 										let day=csplit[i].split('/')
 										let day_name=day[0]
-										let day_date=day[1].replace('年','/').replace('月','/').replace('日','')
+										let day_date=''
+										let isfes=false
+										if(day[1].indexOf('年')==-1){
+											day_date=new Date().getFullYear()+'/'+day[1].replace('月','/').replace('日','')
+											isfes=true
+										}
+										else day_date=day[1].replace('年','/').replace('月','/').replace('日','')
 										day_date=new Date(day_date)
 										if(day_date==undefined)break
 										day_date=day_date.getFullYear()+'/'+(day_date.getMonth()+1)+'/'+day_date.getDate()
@@ -1047,7 +1057,8 @@ getDays()
 												if(j==old_days.length-1){
 														old_days.push({
 															name:day_name,
-															date:day_date
+															date:day_date,
+															isfes:isfes
 														})
 														count++
 												}
@@ -1185,16 +1196,24 @@ getDays()
 				this.fs=false
 			},
 			onValuesChange:function(e){
-				
-				let d=new Date(e.getValues()[0],e.getValues()[1],0)
+				let ccy=e.getSlotValue(0)?e.getSlotValue(0):y_value[ny-1970]
+				let ccm=e.getSlotValue(1)?e.getSlotValue(1):m_value[nm]
+				let d=new Date(ccy,ccm,0)
 				let dd=d.getDate()
 				let ddd=1
 				var d_value=[]
-				while(dd--){
-					if(ddd<10)d_value.push(('0'+ddd.toString()))
-					else d_value.push(ddd.toString())
-					ddd++
-				}
+				var dv1=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15',
+						'16','17','18','19','20','21','22','23','24','25','26','27','28']
+				var dv2=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15',
+						'16','17','18','19','20','21','22','23','24','25','26','27','28','29']
+				var dv3=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15',
+						'16','17','18','19','20','21','22','23','24','25','26','27','28','29','30']
+				var dv4=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15',
+						'16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
+				if(dd==28){d_value=dv1;}
+				if(dd==29){d_value=dv2;}
+				if(dd==30)d_value=dv3
+				if(dd==31)d_value=dv4
 				this.slots.pop()
 				let slot4={
 					flex: 1,
