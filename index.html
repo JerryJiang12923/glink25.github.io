@@ -1036,7 +1036,7 @@ getDays()
 									let content=e.target.result
 									let csplit=content.split('\n')
 									console.log(csplit)
-									let old_days=localStorage.DAYS?JSON.parse(localStorage.DAYS):[]
+									let old_days=localStorage.getItem('DAYS')!=null?JSON.parse(localStorage.DAYS):[]
 									let count=0
 									for(let i=0;i<csplit.length;i++){
 										let day=csplit[i].split('/')
@@ -1044,23 +1044,29 @@ getDays()
 										let day_date=''
 										let isfes=false
 										if(day[1].indexOf('年')==-1){
-											day_date=new Date().getFullYear()+'/'+day[1].replace('月','/').replace('日','')
+											
+											day_date=new Date().getFullYear()+'/'+day[1].replace('月','/')
+											day_date=day_date.split('日')[0]
 											isfes=true
 										}
-										else day_date=day[1].replace('年','/').replace('月','/').replace('日','')
+										else day_date=day[1].replace('年','/').replace('月','/')
+										
+										day_date=day_date.split('日')[0]
+										
 										day_date=new Date(day_date)
 										if(day_date==undefined)break
 										day_date=day_date.getFullYear()+'/'+(day_date.getMonth()+1)+'/'+day_date.getDate()
 										console.log(day_name,day_date)
-										for(let j=0;j<old_days.length;j++){
-											if(old_days[j].name!=day_name){
-												if(j==old_days.length-1){
+										for(let j=0;j<old_days.length||old_days.length==0;j++){
+											if(old_days.length==0||old_days[j].name!=day_name){
+												if(old_days.length==0||j==old_days.length-1){
 														old_days.push({
 															name:day_name,
 															date:day_date,
 															isfes:isfes
 														})
 														count++
+														break
 												}
 											}else break
 										}
